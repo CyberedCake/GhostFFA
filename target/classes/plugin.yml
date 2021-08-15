@@ -1,0 +1,32 @@
+name: GhostFFA
+version: 1.0.0
+main: net.cybercake.ghost.ffa.Main
+prefix: GhostFFA
+authors: [CyberedCake]
+description: The main plugin for the Minehut server GhostFFA.minehut.gg
+website: https://twitter.com/trueCyberCake
+depend: [LuckPerms, PlaceholderAPI, FastAsyncWorldEdit, WorldGuard]
+api-version: 1.16
+
+commands:
+  guislots:
+    description: An administrator command
+    permission: ghostffa.command.guislots
+    usage: /guislots <integer>
+  ghostffa:
+    description: The main command for the plugin GhostFFA
+    usage: Use /ghostffa help for help!
+    aliases: [gffa]
+  ping:
+    description: No description
+    usage: /ping [player]
+  discord:
+    description: No description
+    usage: /discord
+  kits:
+    description: No description
+    usage: /kits; /kit; /k
+    aliases: [kit, k]
+  clearlag:
+    description: No description
+    usage: /clearlag

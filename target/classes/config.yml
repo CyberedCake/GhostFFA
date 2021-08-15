@@ -1,0 +1,30 @@
+# Ghost FFA configuration file
+#
+# Do not change anything unless you know what you're doing!
+#
+# Also, anything changed in this file is immediately changed back as soon
+# as the server restarts!
+
+blockedCommands:
+  bypassPermission: ghostffa.bypass.blockedcommands
+  whitelisted:
+    - 'duel'
+    - 'spectate'
+    - 'games'
+    - 'discord'
+    - 'ping'
+    - 'kits'
+    - 'k'
+    - 'kit'
+    - 'clearlag'
+builtInClearLag:
+  interval: 600 # in seconds
+  showConsoleMessages: true
+  worldsCleared: ['world'] # case insensitive
+join: # PlaceholderAPI works here
+  - '{seperator}'
+  - '&fWelcome to &b&lGhostFFA'
+  - ' '
+  - '&7&oYou have been away for {time}, welcome back :)'
+  - '{seperator}'
+invClickCooldown: 5 # in ticks

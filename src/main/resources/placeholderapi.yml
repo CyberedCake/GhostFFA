@@ -1,0 +1,8 @@
+# Ghost FFA Placeholder Expansion Config
+#
+# Do not change anything unless you know what you're doing!
+#
+# Anything here must be static and unchanging, as the changing stuff will be built in
+
+ghostffa:
+  serverDiscord: 'dsc.gg/ghostffa'

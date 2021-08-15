@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GhostFFA:jar">
+    <output-path>$PROJECT_DIR$/../../MinecraftServers/Test Server (External)/plugins</output-path>
+    <root id="archive" name="GhostFFA.jar">
+      <element id="module-output" name="GhostFFA" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/mojang/brigadier/1.0.17/brigadier-1.0.17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/lucko/commodore-file/1.0/commodore-file-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/lucko/commodore/1.10/commodore-1.10.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

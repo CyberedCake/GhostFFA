@@ -1,0 +1,11 @@
+ghostffa {
+  help;
+  reload;
+  clearlagadmin {
+    now;
+  }
+  items;
+  inventorydebug {
+    player brigadier:string single_word;
+  }
+}
