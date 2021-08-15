@@ -484,6 +484,15 @@ public class Utils {
         return itemMatches.contains(item.getType());
     }
 
+    public static boolean isNumeric(String string) {
+        try {
+            int integer = Integer.parseInt(string);
+            integer = integer + 1;
+            return true;
+        } catch (Exception e) { }
+        return false;
+    }
+
     public enum DefaultFontInfo {
 
         A('A', 5),

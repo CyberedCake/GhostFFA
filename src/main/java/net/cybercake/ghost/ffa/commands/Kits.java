@@ -21,40 +21,29 @@ public class Kits implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(sender instanceof Player) {
-            Player player = (Player) sender;
+        if(!(sender instanceof Player)) { Main.logError("Only players can execute this command!"); return true; }
 
-            if(args.length == 0) {
-                KitsMain.openMenu(player);
-            }else if(args.length == 1) {
-                try {
-                    if(!Utils.isBetweenEquals(Integer.parseInt(args[0]), 1, 7)) {
-                        player.sendMessage(Utils.chat("&cYou have entered an invalid kit number! Number must be between &b1-7")); return true; }
-                    if(!validateKitNumber(player, Integer.parseInt(args[0]))) {
-                        player.sendMessage(Utils.chat("&cYou must buy that kit from the store!")); return true; }
+        Player player = (Player) sender;
 
+        if(args.length >= 1) {
+            if(!Utils.isNumeric(args[0])) { player.sendMessage(Utils.chat("&cIncorrect kit number, must be numeric!")); return true; }
+            if(!Utils.isBetweenEquals(Integer.parseInt(args[0]), 1, 7)) { player.sendMessage(Utils.chat("&cIncorrect kit number, must be between &b1-7")); return true; }
+            if(!validateKitNumber(player, Integer.parseInt(args[0]))) { player.sendMessage(Utils.chat("&cYou must buy that kit from the store!")); return true; }
+        }
+
+        if(args.length == 0) {
+            KitsMain.openMenu(player);
+        }else if(args.length == 1) {
+            KitsMain.applyKit(player, Integer.parseInt(args[0]));
+        }else if(args.length == 2) {
+            switch(args[1]) {
+                case "edit":
                     KitViewer.openMenu(player, Integer.parseInt(args[0]));
-                } catch (Exception e) {
-                    player.sendMessage(Utils.chat("&cAn error occurred whilst opening that kit editor &7(from command)&c. Please report this to staff: &8" + e));
-                }
-            }else if(args.length == 2) {
-                try {
-                    if(!Utils.isBetweenEquals(Integer.parseInt(args[0]), 1, 7)) {
-                        player.sendMessage(Utils.chat("&cYou have entered an invalid kit number! Number must be between &b1-7")); return true; }
-                    if(!validateKitNumber(player, Integer.parseInt(args[0]))) {
-                        player.sendMessage(Utils.chat("&cYou must buy that kit from the store!")); return true; }
-
-                    if(args[1].equals("edit")) {
-                        KitViewer.openMenu(player, Integer.parseInt(args[0]));
-                    }else if(args[1].equals("clear")) {
-
-                    }
-                } catch (Exception e) {
-                    player.sendMessage(Utils.chat("&cAn error occurred whilst opening that kit editor &7(from command)&c. Please report this to staff: &8" + e));
-                }
+                case "apply":
+                    KitsMain.applyKit(player, Integer.parseInt(args[0]));
+                default:
+                    player.sendMessage(Utils.chat("&cIncorrect argument: &8" + args[1]));
             }
-        }else{
-            Main.logError("Only players can execute this command!");
         }
 
 
