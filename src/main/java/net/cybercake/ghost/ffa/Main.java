@@ -64,6 +64,7 @@ public final class Main extends JavaPlugin {
                 RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginCommand("ping"), "ping");
                 RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginCommand("kits"), "kits");
                 RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginCommand("ghostffa"), "ghostffa");
+                RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginManager().getPlugin("PlugMan").getServer().getPluginCommand("plugman"), "plugman");
 
                 logInfo("Commodore successfully registered all commands!");
             } catch (Exception e) {

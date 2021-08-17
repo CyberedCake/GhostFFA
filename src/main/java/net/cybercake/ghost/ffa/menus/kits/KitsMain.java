@@ -82,7 +82,31 @@ public class KitsMain implements Listener {
     }
 
     public static void applyKit(Player player, int kitNumber) {
+        try {
+            for (String slotNum : PlayerDataUtils.getPlayerDataConfigFile(player).getConfigurationSection("kits." + kitNumber).getKeys(false)) {
+                if(!slotNum.contains("slot")) continue;
 
+                int slot = Integer.parseInt(slotNum.replace("slot", ""));
+                if(slot == 36) {
+                    player.getInventory().setHelmet((ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
+                }else if(slot == 37) {
+                    player.getInventory().setChestplate((ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
+                }else if(slot == 38) {
+                    player.getInventory().setLeggings((ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
+                }else if(slot == 39) {
+                    player.getInventory().setBoots((ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
+                }else{
+                    player.getInventory().setItem(slot, (ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
+                }
+            }
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 1F);
+        } catch (Exception e) {
+            // Catch any potential unwanted exceptions that might cause issues when opening the kit
+            player.closeInventory();
+            player.sendMessage(Utils.chat("&cAn error occurred whilst applying that kit! Try again later and report this to staff: &8" + e));
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
+            return;
+        }
     }
 
     public TextComponent store() {

@@ -10,12 +10,14 @@ public class ChatEvent implements Listener {
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
+        Player player = e.getPlayer();
         String msg = e.getMessage();
-        if(p.hasPermission("ghostffa.admin.coloredchat")) {
+        if(player.hasPermission("ghostffa.admin.coloredchat")) {
             msg = Utils.chat(e.getMessage());
         }
-        e.setFormat(Utils.chat(Utils.getFormattedName(p) + " &f> ") + msg);
+        e.setFormat(Utils.chat(Utils.getFormattedName(player) + " &f> ") + msg);
+
+        // Send message to Discord
     }
 
 }
