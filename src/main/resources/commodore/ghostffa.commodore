@@ -4,7 +4,7 @@ ghostffa {
   clearlagadmin {
     now;
   }
-  items;
+  kitroomadmin;
   inventorydebug {
     player brigadier:string single_word;
   }

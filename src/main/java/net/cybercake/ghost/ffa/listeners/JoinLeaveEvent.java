@@ -20,20 +20,26 @@ public class JoinLeaveEvent implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        player.sendMessage(Utils.chat("\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n"));
+        e.joinMessage(Component.text(""));
+
+        // Set basic data
         if(PlayerDataUtils.getPlayerData(player, "joinLeave.joinDate") == null) {
             for(int i=1; i<8; i++) {
                 PlayerDataUtils.setPlayerData(player, "kits." + i + ".lastSetTime", 0);
             }
         }
         PlayerDataUtils.setPlayerData(player, "joinLeave.joinDate", Utils.getUnix());
+        ChatEvent.lastChat.put(player.getName(), System.currentTimeMillis());
 
-        e.joinMessage(Component.text(""));
+        // Message when player joins
+        player.sendMessage(Utils.chat("\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n"));
         if(PlayerDataUtils.getPlayerData(player, "joinLeave.leaveDate") != null) {
             for (String joinMessageLine : Main.getMainConfig().getStringList("join")) {
                 player.sendMessage(replacePlaceholders(joinMessageLine, player));
             }
         }
+        player.sendTitle(" ", " ", 20, 50, 20);
+        player.sendActionBar(Component.text(" "));
     }
 
     @EventHandler

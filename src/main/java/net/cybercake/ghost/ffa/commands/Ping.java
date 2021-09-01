@@ -18,19 +18,18 @@ public class Ping implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(sender instanceof Player) {
-            Player p = (Player) sender;
+        if(!(sender instanceof Player)) {
+            Main.logError("Only players can execute this command!"); return true;
+        }
+        Player player = (Player) sender;
 
-            if(args.length == 0) {
-                p.sendMessage(Utils.chat("&fYour current ping is " + Utils.getColoredPing(p)));
-            } else if (args.length == 1) {
-                Player target = Bukkit.getPlayerExact(args[0]);
-                if(target == null) { p.sendMessage(Utils.chat("&cUnknown online player: &8" + args[0])); return true; }
+        if(args.length == 0) {
+            Utils.commandStatus(player, Utils.Status.INFO, "&fYour current ping is " + Utils.getColoredPing(player));
+        } else if (args.length == 1) {
+            Player target = Bukkit.getPlayerExact(args[0]);
+            if(target == null) { Utils.commandStatus(player, Utils.Status.FAILED, "&cUnknown online player"); return true; }
 
-                p.sendMessage(Utils.chat("&b" + target.getName() + "&f's current ping is " + Utils.getColoredPing(target)));
-            }
-        }else{
-            Main.logError("Only players can execute this command!");
+            Utils.commandStatus(player, Utils.Status.INFO, "&b" + target.getName() + "&f's current ping is " + Utils.getColoredPing(target));
         }
 
 

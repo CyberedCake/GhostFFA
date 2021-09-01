@@ -5,6 +5,7 @@ import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -30,7 +31,7 @@ public class KitViewer implements Listener {
 
     // MAIN OPEN INVENTORY
     public static void openMenu(Player player, int kitNumber) {
-        Inventory inv = Bukkit.createInventory(player, 9*6, "Modifying: Kit #" + kitNumber);
+        Inventory inv = Bukkit.createInventory(player, 9*6, Component.text("Kit #" + kitNumber + ": Modifying"));
 
         // Load kit from player's uuid data file
         try {
@@ -40,11 +41,10 @@ public class KitViewer implements Listener {
                 int slot = Integer.parseInt(slotNum.replace("slot", ""));
                 inv.setItem(slot, (ItemStack) PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + "." + slotNum));
             }
-        } catch (Exception e) {
+        } catch (Exception exception) {
             // Catch any potential unwanted exceptions that might cause issues when opening the kit
             player.closeInventory();
-            player.sendMessage(Utils.chat("&cAn error occurred whilst opening that kit editor! Try again later and report this to staff: &8" + e));
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
+            Utils.error(player, "whilst trying to open the kit editor for " + kitNumber + " for {name}", exception);
             return;
         }
 
@@ -57,16 +57,22 @@ public class KitViewer implements Listener {
         if(!player.hasPermission("ghostffa.kits.vip")) {
             ItemUtils.setInvSlot(inv, 51, Material.NAME_TAG, 1, "&cMake Public", Arrays.asList("&7&oRequires &6&l&oVIP &7&orank!"));
         }
-        ItemUtils.setInvSlot(inv, 50, Material.RESPAWN_ANCHOR, 1, "&bVirtual Kit Room", CommandManager.emptyList);
-        if(!itemsInMenu(player)) {
-            ItemUtils.setInvSlot(inv, 49, Material.COAL_BLOCK, 1, "&8Loading...", CommandManager.emptyList);
+        if(Main.virtualKitRoomLoaded.equalsIgnoreCase("unloaded")) {
+            inv.setItem(50, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&eLoading, please give us a moment!", CommandManager.emptyList));
+        }else if(Main.virtualKitRoomLoaded.equalsIgnoreCase("failed")) {
+            inv.setItem(50, ItemUtils.createBasicItemStack(Material.BARRIER, 1, "&cFailed to load!", Arrays.asList("&7&oA technical fault has occurred!")));
         }else{
-            ItemUtils.setInvSlot(inv, 49, Material.EMERALD_BLOCK, 1, "&8Loading...", CommandManager.emptyList);
+            inv.setItem(50, ItemUtils.createBasicItemStack(Material.RESPAWN_ANCHOR, 1, "&bVirtual Kit Room", CommandManager.emptyList));
+        }
+        if(!itemsInMenu(player)) {
+            ItemUtils.setInvSlot(inv, 49, Material.REDSTONE_BLOCK, 1, "&8Loading...", CommandManager.emptyList);
+        }else{
+            ItemUtils.setInvSlot(inv, 49, Material.REDSTONE_BLOCK, 1, "&8Loading...", CommandManager.emptyList);
         }
         ItemUtils.setInvSlot(inv, 48, Material.CHEST, 1, "&bImport Inventory", CommandManager.emptyList);
         ItemUtils.setInvSlot(inv, 47, Material.WATER_BUCKET, 1, "&bClear Kit", CommandManager.emptyList);
 
-        ItemUtils.setInvSlot(inv, 45, Material.OAK_DOOR, 1, "&bSave and Leave Editor", CommandManager.emptyList);
+        ItemUtils.setInvSlot(inv, 45, Material.ARROW, 1, "&bSave and Leave Editor", CommandManager.emptyList);
 
         player.openInventory(inv);
         ItemUtils.currentMenu.put(player.getName(), ItemUtils.Menu.KIT_VIEWER);
@@ -80,7 +86,7 @@ public class KitViewer implements Listener {
     }
 
     // ON INVENTORY CLICK
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler
     public void onInvClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         int slot = e.getRawSlot();
@@ -136,6 +142,11 @@ public class KitViewer implements Listener {
             }
 
             p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 0.1F);
+        }else if(slot == 50) {
+            int currentCurrentKit = currentKit.get(p.getName());
+            VirtualKitRoom.openMenu(p, 1, currentKit.get(p.getName()));
+            p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> VirtualKitRoom.openMenu(p, 1, currentCurrentKit), 1L);
         }
 
     }

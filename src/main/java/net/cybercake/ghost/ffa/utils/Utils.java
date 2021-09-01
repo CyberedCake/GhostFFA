@@ -1,5 +1,7 @@
 package net.cybercake.ghost.ffa.utils;
 
+import net.cybercake.ghost.ffa.Main;
+import net.kyori.adventure.text.Component;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.md_5.bungee.api.ChatColor;
@@ -9,6 +11,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -22,9 +25,91 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
+
+    public enum Status {
+        FAILED, SUCCESS, INFO, TECHNICAL_FAULT
+    }
+
+    public static void commandStatus(Player player, Status commandStatus, String message) {
+        switch(commandStatus) {
+            case INFO:
+                player.sendActionBar(component(ChatColor.WHITE + message));
+                break;
+            case FAILED:
+                player.sendActionBar(component(ChatColor.RED + message));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
+                break;
+            case SUCCESS:
+                player.sendActionBar(component(ChatColor.GREEN + message));
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 2F);
+                break;
+            case TECHNICAL_FAULT:
+                player.sendActionBar(component(ChatColor.DARK_RED + message));
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 1F);
+                break;
+            default:
+                player.sendActionBar(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
+        }
+    }
+
+    public static void commandStatus(CommandSender commandSender, Status commandStatus, String message) {
+        if(commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            switch(commandStatus) {
+                case INFO:
+                    player.sendActionBar(component(ChatColor.WHITE + message));
+                    break;
+                case FAILED:
+                    player.sendActionBar(component(ChatColor.RED + message));
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
+                    break;
+                case SUCCESS:
+                    player.sendActionBar(component(ChatColor.GREEN + message));
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 2F);
+                    break;
+                case TECHNICAL_FAULT:
+                    player.sendActionBar(component(ChatColor.DARK_RED + message));
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 1F);
+                    break;
+                default:
+                    player.sendActionBar(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
+            }
+        } else {
+            switch(commandStatus) {
+                case INFO:
+                    commandSender.sendMessage(component(ChatColor.WHITE + message));
+                    break;
+                case FAILED:
+                    commandSender.sendMessage(component(ChatColor.RED + message));
+                    break;
+                case SUCCESS:
+                    commandSender.sendMessage(component(ChatColor.GREEN + message));
+                    break;
+                case TECHNICAL_FAULT:
+                    commandSender.sendMessage(component(ChatColor.DARK_RED + message));
+                    break;
+                default:
+                    commandSender.sendMessage(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
+            }
+        }
+    }
+
+    public static void error(CommandSender commandSender, String anErrorOccurred, Exception exception) {
+        if(commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
+        }
+        commandSender.sendMessage(component("&cAn error occurred " + anErrorOccurred.replace("{name}", "you") + "&c: &8" + exception));
+        Main.logError("An error occurred " + anErrorOccurred.replace("{name}", commandSender.getName()) + ". Stack trace below:");
+        Main.logError(" ");
+        printBetterStackTrace(exception);
+    }
+
     public static String chat (String message){
         return ChatColor.translateAlternateColorCodes('&', message);
     }
+
+    public static Component component (String message) { return Component.text(ChatColor.translateAlternateColorCodes('&', message)); }
 
     public static String chat (Character altColorChar, String message) { return ChatColor.translateAlternateColorCodes(altColorChar, message); }
 
@@ -162,6 +247,14 @@ public class Utils {
         return 0;
     }
 
+    public static void broadcast(String string) {
+        if(Bukkit.getOnlinePlayers().size() == 0) return;
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.sendMessage(Component.text(Utils.chat(string)));
+        }
+    }
+
     public static String getColoredPing(Player p) {
         int ping = p.getPing();
         if(ping == 0) {
@@ -289,12 +382,13 @@ public class Utils {
 
         String time = "null";
         Map<TimeUnit, Long> timeSince = Utils.getDateDifference(new Date(smallerNumber), new Date(largerNumber));
-        if(Math.round(timeSince.get(TimeUnit.DAYS)) / 365 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.DAYS)*365) + ((timeSince.get(TimeUnit.DAYS) / 365 == 1) ? " years" : " year");
-        }else if(Math.round(timeSince.get(TimeUnit.DAYS)) / 31 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.DAYS)*31) + ((timeSince.get(TimeUnit.DAYS) / 31 == 1) ? " months" : " month");
-        }else if(Math.round(timeSince.get(TimeUnit.DAYS)) / 7 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.DAYS)*7) + ((timeSince.get(TimeUnit.DAYS) / 7 == 1) ? " weeks" : " week");
+
+        if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 31536000 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.SECONDS)*31536000) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 365 == 1) ? " years" : " year");
+        }else if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 2678400 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.SECONDS)*2678400) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 31 == 1) ? " months" : " month");
+        }else if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 604800 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.SECONDS)*604800) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 7 == 1) ? " weeks" : " week");
         }else if(timeSince.get(TimeUnit.DAYS) != 0) {
             time = timeSince.get(TimeUnit.DAYS) + ((timeSince.get(TimeUnit.DAYS) == 1) ? " day" : " days");
         }else if(timeSince.get(TimeUnit.HOURS) != 0) {
@@ -303,7 +397,7 @@ public class Utils {
             time = timeSince.get(TimeUnit.MINUTES) + ((timeSince.get(TimeUnit.MINUTES) == 1) ? " minute" : " minutes");
         }
 
-        if(timeSince.get(TimeUnit.HOURS) < 1) {
+        if(timeSince.get(TimeUnit.DAYS) < 1 && timeSince.get(TimeUnit.HOURS) < 1) {
             if(aFewSeconds) {
                 if(timeSince.get(TimeUnit.MINUTES) < 5 && timeSince.get(TimeUnit.MINUTES) > 0) {
                     time = "a few minutes";
@@ -313,7 +407,7 @@ public class Utils {
             }else{
                 if(timeSince.get(TimeUnit.MINUTES) > 0) {
                     time = timeSince.get(TimeUnit.MINUTES) + ((timeSince.get(TimeUnit.MINUTES) == 1) ? " minute" : " minutes");
-                }else if(timeSince.get(TimeUnit.SECONDS) > 0) {
+                }else if(timeSince.get(TimeUnit.SECONDS) >= 0) {
                     time = timeSince.get(TimeUnit.SECONDS) + ((timeSince.get(TimeUnit.SECONDS) == 1) ? " second" : " seconds");
                 }
             }
@@ -484,10 +578,19 @@ public class Utils {
         return itemMatches.contains(item.getType());
     }
 
-    public static boolean isNumeric(String string) {
+    public static boolean isInteger(String string) {
         try {
             int integer = Integer.parseInt(string);
             integer = integer + 1;
+            return true;
+        } catch (Exception e) { }
+        return false;
+    }
+
+    public static boolean isDouble(String string) {
+        try {
+            double doub = Double.parseDouble(string);
+            doub = doub + 1;
             return true;
         } catch (Exception e) { }
         return false;

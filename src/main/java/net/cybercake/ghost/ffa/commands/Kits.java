@@ -2,6 +2,7 @@ package net.cybercake.ghost.ffa.commands;
 
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.Main;
+import net.cybercake.ghost.ffa.menus.kits.KitPreviewer;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
 import net.cybercake.ghost.ffa.menus.kits.KitsMain;
 import net.cybercake.ghost.ffa.utils.Utils;
@@ -26,9 +27,9 @@ public class Kits implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if(args.length >= 1) {
-            if(!Utils.isNumeric(args[0])) { player.sendMessage(Utils.chat("&cIncorrect kit number, must be numeric!")); return true; }
-            if(!Utils.isBetweenEquals(Integer.parseInt(args[0]), 1, 7)) { player.sendMessage(Utils.chat("&cIncorrect kit number, must be between &b1-7")); return true; }
-            if(!validateKitNumber(player, Integer.parseInt(args[0]))) { player.sendMessage(Utils.chat("&cYou must buy that kit from the store!")); return true; }
+            if(!Utils.isInteger(args[0])) { Utils.commandStatus(player, Utils.Status.FAILED, "Invalid integer, must be a number between &b1-7"); return true; }
+            if(!Utils.isBetweenEquals(Integer.parseInt(args[0]), 1, 7)) { Utils.commandStatus(player, Utils.Status.FAILED, "Invalid kit number, must be a number between &b1-7"); return true; }
+            if(!validateKitNumber(player, Integer.parseInt(args[0]))) { Utils.commandStatus(player, Utils.Status.FAILED, "You don't have access to that kit"); return true; }
         }
 
         if(args.length == 0) {
@@ -39,10 +40,18 @@ public class Kits implements CommandExecutor, TabCompleter {
             switch(args[1]) {
                 case "edit":
                     KitViewer.openMenu(player, Integer.parseInt(args[0]));
+                    break;
                 case "apply":
                     KitsMain.applyKit(player, Integer.parseInt(args[0]));
+                    break;
+                case "makePublic":
+                    Utils.commandStatus(player, Utils.Status.FAILED, "Making kits public is currently not available");
+                    break;
+                case "preview":
+                    KitPreviewer.openMenu(player, Integer.parseInt(args[0]));
+                    break;
                 default:
-                    player.sendMessage(Utils.chat("&cIncorrect argument: &8" + args[1]));
+                    Utils.commandStatus(player, Utils.Status.FAILED, "Invalid argument");
             }
         }
 
@@ -52,6 +61,7 @@ public class Kits implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+        if(!(sender instanceof Player)) { return CommandManager.emptyList; }
         Player player = (Player) sender;
         if(args.length == 1) {
             ArrayList<String> kits = new ArrayList<>();
@@ -69,7 +79,10 @@ public class Kits implements CommandExecutor, TabCompleter {
             }
             return CommandManager.createReturnList(kits, args[0]);
         }else if(args.length == 2) {
-            return CommandManager.createReturnList(Arrays.asList("apply", "edit", "clear", "makePublic"), args[1]);
+            if(Utils.isInteger(args[0]) && validateKitNumber(player, Integer.parseInt(args[0]))) {
+                return CommandManager.createReturnList(Arrays.asList("apply", "edit", "makePublic", "preview"), args[1]);
+            }
+            return CommandManager.emptyList;
         }
         return CommandManager.emptyList;
     }

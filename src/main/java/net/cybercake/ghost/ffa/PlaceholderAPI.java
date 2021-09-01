@@ -79,7 +79,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         try {
             getPAPI().save(configFile);
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save placeholderapi to " + configFile, ex);
+            Bukkit.getLogger().log(Level.SEVERE, "Could not save PlaceholderAPI to " + configFile, ex);
         }
     }
 

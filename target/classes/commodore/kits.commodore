@@ -2,7 +2,7 @@ kits {
   kitNumber brigadier:integer 1 7 {
     apply;
     edit;
-    clear;
     makePublic;
+    preview;
   }
 }

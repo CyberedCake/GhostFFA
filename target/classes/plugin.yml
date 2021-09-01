@@ -12,21 +12,24 @@ commands:
   guislots:
     description: An administrator command
     permission: ghostffa.command.guislots
-    usage: /guislots <integer>
+    usage: An error occurred whilst executing this command!
   ghostffa:
     description: The main command for the plugin GhostFFA
     usage: Use /ghostffa help for help!
     aliases: [gffa]
   ping:
     description: No description
-    usage: /ping [player]
+    usage: An error occurred whilst executing this command!
   discord:
     description: No description
-    usage: /discord
+    usage: An error occurred whilst executing this command!
   kits:
     description: No description
-    usage: /kits; /kit; /k
+    usage: An error occurred whilst executing this command!
     aliases: [kit, k]
   clearlag:
     description: No description
-    usage: /clearlag
+    usage: An error occurred whilst executing this command!
+  spawn:
+    description: No description
+    usage: An error occurred whilst executing this command!

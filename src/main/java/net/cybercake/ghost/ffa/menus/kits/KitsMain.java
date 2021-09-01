@@ -5,6 +5,7 @@ import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
+import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -27,9 +28,9 @@ public class KitsMain implements Listener {
     public static HashMap<Integer, String> kitStatus = new HashMap<>();
 
     public static void openMenu(Player player) {
-        Inventory inv = Bukkit.createInventory(player, 9*6, "Kits");
+        Inventory inv = Bukkit.createInventory(player, 9*4, Component.text("Kits"));
 
-        ItemUtils.fillGUI(inv, 6, Material.CYAN_STAINED_GLASS_PANE, 1, "&r", CommandManager.emptyList);
+        ItemUtils.fillGUI(inv, 4, Material.CYAN_STAINED_GLASS_PANE, 1, "&r", CommandManager.emptyList);
 
         inv.setItem(10, setKitSlot(player,10, 1, KitType.FREE));
         inv.setItem(11, setKitSlot(player,11, 2, KitType.FREE));
@@ -39,43 +40,52 @@ public class KitsMain implements Listener {
         inv.setItem(15, setKitSlot(player,15, 6, KitType.REQUIRES_PATRON));
         inv.setItem(16, setKitSlot(player,16, 7, KitType.REQUIRES_PATRON));
 
+        inv.setItem(31, ItemUtils.createBasicItemStack(Material.STRUCTURE_VOID, 1, "&bExit Menu", CommandManager.emptyList));
+
         player.openInventory(inv);
         ItemUtils.currentMenu.put(player.getName(), ItemUtils.Menu.KITS_MAIN);
     }
 
     @EventHandler
     public void onInvClick(InventoryClickEvent e) {
-        Player p = (Player) e.getWhoClicked();
+        Player player = (Player) e.getWhoClicked();
         int slot = e.getRawSlot();
         ItemStack item = e.getCurrentItem();
         ClickType clickType = e.getClick();
 
-        if(ItemUtils.currentMenu.get(p.getName()) == null || (!ItemUtils.currentMenu.get(p.getName()).equals(ItemUtils.Menu.KITS_MAIN))) return;
+        if(ItemUtils.currentMenu.get(player.getName()) == null || (!ItemUtils.currentMenu.get(player.getName()).equals(ItemUtils.Menu.KITS_MAIN))) return;
         if(item == null) return;
         e.setCancelled(true);
-        if(!Utils.isBetweenEquals(slot, 10, 16)) return;
-        if(ItemUtils.invClickCooldown.get(p.getName()) != null) return;
-
+        if(ItemUtils.invClickCooldown.get(player.getName()) != null) return;
         ItemUtils.invClickCooldown.put(e.getWhoClicked().getName(), Main.getMainConfig().getInt("invClickCooldown"));
 
+        if(slot == 31) {
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_BREAK, 1F, 1F);
+        }
+
+        if(!Utils.isBetweenEquals(slot, 10, 16)) return;
         if(kitStatus.get(slot).contains("errored>")) {
-            p.sendMessage(Utils.chat("&cAn error occurred whilst attempting to load this kit: &8" + kitStatus.get(slot).replace("errored>", "")));
-            p.closeInventory();
-            p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 0.1F);
+            player.sendMessage(Utils.chat("&cAn error occurred whilst attempting to load this kit: &8" + kitStatus.get(slot).replace("errored>", "")));
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("requires_patron")) {
-            p.sendMessage(Utils.chat("&cYou must have &a&lPATRON &crank to use this kit slot!"));
-            p.sendMessage(store());
-            p.closeInventory();
-            p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
+            player.sendMessage(Utils.chat("&cYou must have &a&lPATRON &crank to use this kit slot!"));
+            player.sendMessage(store());
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("requires_vip")) {
-            p.sendMessage(Utils.chat("&cYou must have &6&lVIP &crank to use this kit slot!"));
-            p.sendMessage(store());
-            p.closeInventory();
-            p.playSound(p.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
+            player.sendMessage(Utils.chat("&cYou must have &6&lVIP &crank to use this kit slot!"));
+            player.sendMessage(store());
+            player.closeInventory();
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("accessible")) {
             if(clickType.equals(ClickType.RIGHT) || clickType.equals(ClickType.SHIFT_RIGHT)) {
-                KitViewer.openMenu(p, item.getAmount());
-                p.playSound(p.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
+                KitViewer.openMenu(player, item.getAmount());
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
+            }else if(clickType.equals(ClickType.LEFT) || clickType.equals(ClickType.SHIFT_LEFT)) {
+                KitPreviewer.openMenu(player, item.getAmount());
+                player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
             }
         }
 
@@ -83,6 +93,7 @@ public class KitsMain implements Listener {
 
     public static void applyKit(Player player, int kitNumber) {
         try {
+            player.getInventory().clear();
             for (String slotNum : PlayerDataUtils.getPlayerDataConfigFile(player).getConfigurationSection("kits." + kitNumber).getKeys(false)) {
                 if(!slotNum.contains("slot")) continue;
 
@@ -100,11 +111,10 @@ public class KitsMain implements Listener {
                 }
             }
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1F, 1F);
-        } catch (Exception e) {
+        } catch (Exception exception) {
             // Catch any potential unwanted exceptions that might cause issues when opening the kit
             player.closeInventory();
-            player.sendMessage(Utils.chat("&cAn error occurred whilst applying that kit! Try again later and report this to staff: &8" + e));
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
+            Utils.error(player, "whilst trying to apply that kit for " + kitNumber + " for {name}", exception);
             return;
         }
     }
@@ -137,7 +147,7 @@ public class KitsMain implements Listener {
                         return returnedItem;
                     }
                 default:
-                    List<String> mainLore = new LinkedList<>(Arrays.asList(" ", "&7To Edit:", "   &bRight Click", " ", "&7To Apply:", "   &b/kit " + kit + " &8or &b/k " + kit, "   &bLeft Click"));
+                    List<String> mainLore = new LinkedList<>(Arrays.asList(" ", "&7To Edit:", "   &bRight Click", " ", "&7To Apply:", "   &b/kit " + kit + " &8or &b/k " + kit, " ", "&7To Preview:", "   &bLeft Click"));
                     if(Long.parseLong(PlayerDataUtils.getPlayerData(player, "kits." + kit + ".lastSetTime") + "") != 0) {
                         mainLore.add(" ");
                         mainLore.add("&7Last Modified:");

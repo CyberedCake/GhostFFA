@@ -1,9 +1,9 @@
-# Ghost FFA configuration file
+# Ghost FFA configuration file!
 #
 # Do not change anything unless you know what you're doing!
 #
 # Also, anything changed in this file is immediately changed back as soon
-# as the server restarts!
+# as the server restarts, so this file is mainly for debugging.
 
 blockedCommands:
   bypassPermission: ghostffa.bypass.blockedcommands
@@ -17,6 +17,7 @@ blockedCommands:
     - 'k'
     - 'kit'
     - 'clearlag'
+    - 'spawn'
 builtInClearLag:
   interval: 600 # in seconds
   showConsoleMessages: true
@@ -28,3 +29,8 @@ join: # PlaceholderAPI works here
   - '&7&oYou have been away for {time}, welcome back :)'
   - '{seperator}'
 invClickCooldown: 5 # in ticks
+timeZone: 'GMT-4'
+disabledKickMessages: # if a kick message contains this, it will not kick them for it
+  - 'Kicked for spamming'
+  - 'Illegal characters in chat'
+chatCooldown: 1000 # in miliseconds

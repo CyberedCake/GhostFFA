@@ -26,13 +26,9 @@ public class Reload extends SubCommand {
         try { PlaceholderAPI.reloadPAPI(); } catch (Exception e) { ex = e; exceptionFile = "default-items.yml"; }
         long msAfter = System.currentTimeMillis() - mss;
         if(ex != null) {
-            sender.sendMessage(Utils.chat("&cAn error occurred whilst trying to reload the " + exceptionFile + " file!"));
-            Bukkit.getLogger().severe("An error occurred whilst trying to reload the " + exceptionFile + " file!");
-            Bukkit.getLogger().severe(" ");
-            Bukkit.getLogger().severe("Stack trace is below:");
-            Utils.printBetterStackTrace(ex);
+            Utils.error(sender, "whilst trying to reload " + exceptionFile, ex);
         }else{
-            sender.sendMessage(Utils.chat("&fSuccessfully reloaded the configuration files in &b" + msAfter + "&bms&f!"));
+            Utils.commandStatus(sender, Utils.Status.INFO, "&fSuccessfully reloaded the configuration files in &b" + msAfter + "&bms");
         }
     }
 

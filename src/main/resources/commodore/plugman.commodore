@@ -36,7 +36,11 @@ plugman {
     plugin brigadier:string single_word;
   }
   check {
-    all;
-    plugin brigadier:string single_word;
+    all {
+      -f;
+    }
+    plugin brigadier:string single_word {
+      -f;
+    }
   }
 }

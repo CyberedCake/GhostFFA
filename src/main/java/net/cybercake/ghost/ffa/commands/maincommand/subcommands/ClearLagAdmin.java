@@ -5,8 +5,10 @@ import net.cybercake.ghost.ffa.commands.maincommand.SubCommand;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.repeatingtasks.ClearLagTask;
 import net.cybercake.ghost.ffa.utils.Utils;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,22 +21,16 @@ public class ClearLagAdmin extends SubCommand {
 
     @Override
     public void perform(CommandSender sender, String[] args, Command command) {
-        if(args.length < 2) {
-            sender.sendMessage(Utils.chat("&cInvalid usage! &7/ghostffa clearlagadmin now"));
-        }else if(args.length == 2) {
-            if(!args[1].equals("now")) { sender.sendMessage(Utils.chat("&cUnknown argument: &8" + args[1])); }
-
-
-            try {
-                int itemsCleared = ClearLagTask.clearGroundItems();
-                sender.sendMessage(Utils.chat("&fYou have cleared &b" + itemsCleared + " &fground items manually!"));
-                Main.logInfo("(ClearLag) Cleared " + itemsCleared + " ground items, manually triggered by " + sender.getName());
-            } catch (Exception e) {
-                Main.logError("An error occurred whilst clearing items manually, by " + sender.getName());
-                Main.logError(" ");
-                Main.logError("Stack trace below:");
-                Utils.printBetterStackTrace(e);
+        try {
+            int itemsCleared = ClearLagTask.clearGroundItems();
+            Utils.commandStatus(sender, Utils.Status.INFO, "&fYou have cleared &b" + itemsCleared + " &fground items manually");
+            if(sender instanceof Player) {
+                Player player = (Player) sender;
+                player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 1F, 1F);
             }
+            Main.logInfo("(ClearLag) Cleared " + itemsCleared + " ground items, manually triggered by " + sender.getName());
+        } catch (Exception exception) {
+            Utils.error(sender, "whilst trying to clear dropped items manually (triggered by {name})", exception);
         }
     }
 

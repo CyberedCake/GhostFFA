@@ -13,8 +13,10 @@ public class CommandPreProcessEvent implements Listener {
         Player p = e.getPlayer();
         if(p.hasPermission(Main.getMainConfig().getString("blockedCommands.bypassPermission"))) return;
 
+        String[] kick = e.getMessage().split(" ");
+
         for(String command : Main.getMainConfig().getStringList("blockedCommands.whitelisted")) {
-            if(e.getMessage().equalsIgnoreCase("/" + command)) {
+            if(kick[0].equalsIgnoreCase("/" + command)) {
                 return;
             }
         }

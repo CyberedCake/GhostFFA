@@ -26,14 +26,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private final static String pluginPermission = "ghostffa";
     private final static String pluginTitle = "GHOSTFFA";
-    private final static String noPermissionMsg = "&cYou do not have permission to execute this command!";
+    private final static String noPermissionMsg = "&cYou don't have permission to use this";
 
     public CommandManager() {
         subcommands.add(new Help());
         subcommands.add(new Reload());
         subcommands.add(new ClearLagAdmin());
-        subcommands.add(new Items());
         subcommands.add(new InventoryDebug());
+        subcommands.add(new VirtualKitRoomAdmin());
     }
 
     // Note for later: please clan this up and remove the arrow code :D
@@ -69,13 +69,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                         } else if (!cmd.getPermission().equalsIgnoreCase("") && sender.hasPermission(cmd.getPermission())) {
                             cmd.perform(sender, args, command);
                         } else {
-                            sender.sendMessage(Utils.chat(noPermissionMsg));
+                            Utils.commandStatus(sender, Utils.Status.FAILED, noPermissionMsg);
                         }
                         ran = true;
                     }
                 }
                 if(!ran) {
-                    sender.sendMessage(Utils.chat("&cUnknown sub-command: &8" + args[0]));
+                    Utils.commandStatus(sender, Utils.Status.FAILED, "Unknown sub-command");
                 }
             }
         }

@@ -2,8 +2,10 @@ package net.cybercake.ghost.ffa.utils;
 
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.Main;
+import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
 import net.cybercake.ghost.ffa.menus.kits.KitsMain;
+import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -248,31 +250,30 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
         Player player = (Player) e.getPlayer();
 
         if(currentMenu.get(player.getName()) != null) {
-            boolean openKitsAfter = false;
             if(currentMenu.get(player.getName()).equals(Menu.KIT_VIEWER)) {
                 KitViewer.saveKitConfiguration(player, KitViewer.currentKit.get(player.getName()), false);
-                openKitsAfter = true;
-            }
-            currentMenu.remove(player.getName());
-            if(openKitsAfter) {
-                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
+                Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), () -> {
+                    if((ItemUtils.currentMenu.get(player.getName()) != null) && !(ItemUtils.currentMenu.get(player.getName()).equals(Menu.VIRTUAL_KIT_ROOM))) {
                         KitsMain.openMenu(player);
                     }
                 }, 1L);
+            }else if(currentMenu.get(player.getName()).equals(Menu.ADMIN_VIRTUAL_KIT_ROOM)) {
+                VirtualKitRoomAdmin.saveKitRoomConfiguration(player, VirtualKitRoom.currentCategory.get(player.getName()), false);
             }
-        }
+            currentMenu.remove(player.getName()); }
         if(invClickCooldown.get(player.getName()) != null) {
-            invClickCooldown.remove(player.getName());
-        }
+            invClickCooldown.remove(player.getName()); }
+        if(VirtualKitRoom.oldCurrentKit.get(player.getName()) != null) {
+            VirtualKitRoom.oldCurrentKit.remove(player.getName());}
         if(KitViewer.currentKit.get(player.getName()) != null) {
-            KitViewer.currentKit.remove(player.getName());
-        }
+            KitViewer.currentKit.remove(player.getName()); }
+        if(VirtualKitRoom.currentCategory.get(player.getName()) != null) {
+            VirtualKitRoom.currentCategory.remove(player.getName()); }
+        VirtualKitRoomAdmin.playerEditing = null;
     }
 
     public enum Menu {
-        KITS_MAIN, KIT_VIEWER
+        KITS_MAIN, KIT_VIEWER, VIRTUAL_KIT_ROOM, ADMIN_VIRTUAL_KIT_ROOM, KIT_PREVIEWER
     }
 
     public static boolean hasEnoughRoom(Player player, ItemStack item) {

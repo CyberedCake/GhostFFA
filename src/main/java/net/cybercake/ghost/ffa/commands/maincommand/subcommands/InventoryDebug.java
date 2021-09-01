@@ -2,6 +2,8 @@ package net.cybercake.ghost.ffa.commands.maincommand.subcommands;
 
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.SubCommand;
+import net.cybercake.ghost.ffa.menus.kits.KitViewer;
+import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
@@ -55,6 +57,12 @@ public class InventoryDebug extends SubCommand {
         to.sendMessage(Utils.chat("  &8> &fGUIs"));
         to.sendMessage(Utils.chat("      &8> &bCurrent Menu: &7" + ItemUtils.currentMenu.get(dataFrom.getName())));
         to.sendMessage(Utils.chat("      &8> &bCurrent Cooldown: &7" + ItemUtils.invClickCooldown.get(dataFrom.getName())));
+        to.sendMessage(Utils.chat("      &8> &bEditing Kit: &7#" + KitViewer.currentKit.get(dataFrom.getName())));
+        try {
+            to.sendMessage(Utils.chat("      &8> &bCurrent Kit Room Category: &7#" + VirtualKitRoom.currentCategory.get(dataFrom.getName()) + " &8(slot" + VirtualKitRoomAdmin.getSlotFromCategory(VirtualKitRoom.currentCategory.get(dataFrom.getName())) + "&8)"));
+        } catch (Exception exception) {
+            to.sendMessage(Utils.chat("      &8> &bCurrent Kit Room Category: &7null"));
+        }
         to.sendMessage(Utils.getSeperator(ChatColor.BLUE));
     }
 

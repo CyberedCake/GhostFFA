@@ -9,12 +9,7 @@ public class ResetInvClickCooldown implements Runnable {
     @Override
     public void run() {
         for(Player player : Bukkit.getOnlinePlayers()) {
-            if(ItemUtils.invClickCooldown.get(player.getName()) == null) return;
-
-            ItemUtils.invClickCooldown.put(player.getName(), ItemUtils.invClickCooldown.get(player.getName())-1);
-            if(ItemUtils.invClickCooldown.get(player.getName()) <= -1) {
-                ItemUtils.invClickCooldown.remove(player.getName());
-            }
+            ItemUtils.invClickCooldown.remove(player.getName());
         }
     }
 }

@@ -5,6 +5,7 @@ import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 
 public class ClearLagTask implements Runnable {
 
@@ -20,11 +21,10 @@ public class ClearLagTask implements Runnable {
                 if(Main.getMainConfig().getBoolean("builtInClearLag.showConsoleMessages")) { Main.logInfo("(ClearLag) Cleared " + clearGroundItems() + " ground items!"); }
                 currentInterval = 0;
             }
-        } catch (Exception e) {
-            Main.logError("An error occurred whilst clearing ground entities!");
-            Main.logError(" ");
-            Main.logError("Stack trace below:");
-            Utils.printBetterStackTrace(e);
+        } catch (Exception exception) {
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                Utils.error(player, "whilst clearing ground items", exception);
+            }
             Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(Utils.chat("&c&lClearLag Error! &7An error occurred with ClearLag, check console!")));
             currentInterval = clearLagInterval;
         }
