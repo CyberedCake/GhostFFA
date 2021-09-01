@@ -312,14 +312,14 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
     }
 
     public static String toKey(String notKey) {
-        if(!notKey.contains("minecraft:")) {
+        if(!notKey.startsWith("minecraft:")) {
             return "minecraft:" + notKey;
         }
         return notKey;
     }
 
     public static Material mcKeyToMaterial(String mcKey) {
-        return Material.getMaterial(mcKey.split(":")[1].toUpperCase(Locale.ROOT));
+        return Material.getMaterial(toKey(mcKey).split(":")[1].toUpperCase(Locale.ROOT));
     }
 
 

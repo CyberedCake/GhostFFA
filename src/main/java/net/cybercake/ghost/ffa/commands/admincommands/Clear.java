@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Clear implements CommandExecutor, TabCompleter {
@@ -78,7 +79,7 @@ public class Clear implements CommandExecutor, TabCompleter {
             }else if(!clearWho.getInventory().contains(ItemUtils.mcKeyToMaterial(specificItem))) {
                 Utils.commandStatus(msgTo, Utils.Status.FAILED, (msgTo == clearWho ? "You don't " : clearWho.getName() + " doesn't ") + "have any of that item in their inventory");
             }else{
-                Utils.commandStatus(msgTo, Utils.Status.INFO, "You removed all &b" + specificItem.replace("minecraft:", "") + " &ffrom " + (msgTo == clearWho ? "yourself" : clearWho.getName()));
+                Utils.commandStatus(msgTo, Utils.Status.INFO, "You removed all &b" + new ItemStack(ItemUtils.mcKeyToMaterial(specificItem), 1).getI18NDisplayName() + " &ffrom " + (msgTo == clearWho ? "yourself" : clearWho.getName()));
                 clearWho.getInventory().remove(ItemUtils.mcKeyToMaterial(specificItem));
             }
         }
@@ -87,7 +88,16 @@ public class Clear implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if(args.length == 2){
-            return CommandManager.createReturnList(ItemUtils.mcItems(), args[1]);
+            ArrayList<String> withoutMinecraftColon = new ArrayList<>();
+            withoutMinecraftColon.add("minecraft:");
+            for(String material : ItemUtils.mcItems()) {
+                if(args[1].startsWith("minecraft:")) {
+                    withoutMinecraftColon.add(material);
+                } else{
+                    withoutMinecraftColon.add(material.replace("minecraft:", ""));
+                }
+            }
+            return CommandManager.createReturnList(withoutMinecraftColon, args[1]);
         }else if(args.length == 1) {
             return CommandManager.createReturnList(CommandManager.getPlayerNames(), args[0]);
         }

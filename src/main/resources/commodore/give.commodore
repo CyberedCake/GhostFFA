@@ -1,0 +1,7 @@
+give {
+  item brigadier:string single_word {
+    amount brigadier:integer 1 64 {
+      player brigadier:string single_word;
+    }
+  }
+}

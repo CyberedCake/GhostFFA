@@ -581,10 +581,11 @@ public class Utils {
     public static boolean isInteger(String string) {
         try {
             int integer = Integer.parseInt(string);
-            integer = integer + 1;
+            integer = integer + 5;
             return true;
-        } catch (Exception e) { }
-        return false;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static boolean isDouble(String string) {

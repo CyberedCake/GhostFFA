@@ -43,3 +43,7 @@ commands:
     description: No description
     usage: An error occurred whilst executing this command!
     aliases: [invreset]
+  give:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [item, i]

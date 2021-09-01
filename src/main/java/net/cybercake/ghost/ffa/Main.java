@@ -4,6 +4,7 @@ import me.lucko.commodore.CommodoreProvider;
 import net.cybercake.ghost.ffa.commands.*;
 import net.cybercake.ghost.ffa.commands.admincommands.Clear;
 import net.cybercake.ghost.ffa.commands.admincommands.Gamemode;
+import net.cybercake.ghost.ffa.commands.admincommands.Give;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
@@ -81,6 +82,7 @@ public final class Main extends JavaPlugin {
         // Admin commands
         registerCommandAndTab("gamemode", new Gamemode(), true);
         registerCommandAndTab("clear", new Clear(), true);
+        registerCommandAndTab("give", new Give(), true);
 
         if(CommodoreProvider.isSupported()) {
             try {
