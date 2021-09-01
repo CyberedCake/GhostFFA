@@ -1,0 +1,5 @@
+clear {
+  player brigadier:string single_word {
+    item brigadier:string single_word;
+  }
+}

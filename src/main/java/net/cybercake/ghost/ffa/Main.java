@@ -2,6 +2,8 @@ package net.cybercake.ghost.ffa;
 
 import me.lucko.commodore.CommodoreProvider;
 import net.cybercake.ghost.ffa.commands.*;
+import net.cybercake.ghost.ffa.commands.admincommands.Clear;
+import net.cybercake.ghost.ffa.commands.admincommands.Gamemode;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
@@ -18,6 +20,7 @@ import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -26,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -34,6 +38,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
@@ -71,6 +78,9 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("kits", new Kits(), true);
         registerCommandAndTab("clearlag", new ClearLagCMD(), true);
         registerCommandAndTab("spawn", new Spawn(), true);
+        // Admin commands
+        registerCommandAndTab("gamemode", new Gamemode(), true);
+        registerCommandAndTab("clear", new Clear(), true);
 
         if(CommodoreProvider.isSupported()) {
             try {
@@ -182,16 +192,16 @@ public final class Main extends JavaPlugin {
     public static void logError(String msg) { Bukkit.getLogger().severe(msg); }
 
     private static void registerCommandAndTab(String name, Object commandExecutor, boolean withCommodore) {
-        plugin.getCommand(name).setExecutor((CommandExecutor)commandExecutor);
-        plugin.getCommand(name).setTabCompleter((TabCompleter) commandExecutor);
-        if(withCommodore) {
-            if(CommodoreProvider.isSupported()) {
-                try {
+        try {
+            plugin.getCommand(name).setExecutor((CommandExecutor)commandExecutor);
+            plugin.getCommand(name).setTabCompleter((TabCompleter) commandExecutor);
+            if(withCommodore) {
+                if(CommodoreProvider.isSupported()) {
                     RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginCommand(name), name);
-                } catch (Exception e) {
-                    logError(getPluginPrefix() + " An error occurred whilst loading brigadier/commodore command: /" + name);
                 }
             }
+        } catch (Exception exception) {
+            logError("An error occurred whilst loading the command: /" + name);
         }
     }
     private static void registerCommand(String name, CommandExecutor commandExecutor) { plugin.getCommand(name).setExecutor(commandExecutor); }

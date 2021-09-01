@@ -7,6 +7,7 @@ description: The main plugin for the Minehut server GhostFFA.minehut.gg
 website: https://twitter.com/trueCyberCake
 depend: [LuckPerms, PlaceholderAPI, FastAsyncWorldEdit, WorldGuard]
 api-version: 1.16
+load: POSTWORLD
 
 commands:
   guislots:
@@ -33,3 +34,12 @@ commands:
   spawn:
     description: No description
     usage: An error occurred whilst executing this command!
+
+  gamemode:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [gm]
+  clear:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [invreset]

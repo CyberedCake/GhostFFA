@@ -29,10 +29,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
 
@@ -302,6 +299,27 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
             Item newItem = player.getWorld().dropItem(playerLocation, item);
             newItem.setVelocity(playerVector);
         }
+    }
+
+    public static ArrayList<String> mcItems() {
+        ArrayList<String> mcItems = new ArrayList<>();
+        for(Material material : Material.values()) {
+            if(material.isItem()) {
+                mcItems.add(material.getKey().toString());
+            }
+        }
+        return mcItems;
+    }
+
+    public static String toKey(String notKey) {
+        if(!notKey.contains("minecraft:")) {
+            return "minecraft:" + notKey;
+        }
+        return notKey;
+    }
+
+    public static Material mcKeyToMaterial(String mcKey) {
+        return Material.getMaterial(mcKey.split(":")[1].toUpperCase(Locale.ROOT));
     }
 
 
