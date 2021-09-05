@@ -322,6 +322,22 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
         return Material.getMaterial(toKey(mcKey).split(":")[1].toUpperCase(Locale.ROOT));
     }
 
+    public static List<String> tabCompleteItem(String arguments) {
+        if(mcItems().contains(toKey(arguments))) {
+            return CommandManager.emptyList;
+        }
+        ArrayList<String> withoutMinecraftColon = new ArrayList<>();
+        withoutMinecraftColon.add("minecraft:");
+        for(String material : mcItems()) {
+            if(arguments.startsWith("minecraft:")) {
+                withoutMinecraftColon.add(material);
+            } else{
+                withoutMinecraftColon.add(material.replace("minecraft:", ""));
+            }
+        }
+        return CommandManager.createReturnList(withoutMinecraftColon, arguments);
+    }
+
 
 
 

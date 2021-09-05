@@ -16,7 +16,7 @@ import java.util.List;
 public class ClearLagAdmin extends SubCommand {
 
     public ClearLagAdmin() {
-        super("clearlagadmin", "ghostffa.subcommand.clearlagadmin", "Set the clearlag time or set to instant clearlag.", "/ghostffa clearlagadmin now", new String[]{"clearlag", "cl"});
+        super("clearlagadmin", "ghostffa.subcommand.clearlagadmin", "Set the clearlag time or set to instant clearlag.", "/ghostffa clearlagadmin", new String[]{"clearlag", "cl"});
     }
 
     @Override
@@ -36,9 +36,6 @@ public class ClearLagAdmin extends SubCommand {
 
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
-        if(args.length < 3) {
-            return CommandManager.createReturnList(Arrays.asList("now"), args[1]);
-        }
         return CommandManager.emptyList;
     }
 }

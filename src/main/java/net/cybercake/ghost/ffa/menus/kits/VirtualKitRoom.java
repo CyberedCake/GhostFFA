@@ -49,7 +49,7 @@ public class VirtualKitRoom implements Listener {
             return;
         }
         ItemStack[] inventoryContent = cachedKitRoomItems.get(category).getContents();
-        Inventory inventory = Bukkit.createInventory(player, 9*6, Component.text("Virtual Kit Room (" + category + "/5)"));
+        Inventory inventory = Bukkit.createInventory(player, 9*6, Component.text("Virtual Kit Room (" + category + "/6)"));
         for(int i=0; i<inventoryContent.length; i++) {
             inventory.setItem(i, inventoryContent[i]);
         }
@@ -76,14 +76,14 @@ public class VirtualKitRoom implements Listener {
         if(slot == 45) {
             KitViewer.openMenu(player, oldCurrentKit.get(player.getName()));
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1F, 2F);
-        }else if(Utils.isBetweenEquals(slot, 47, 51)) {
-            if(VirtualKitRoom.currentCategory.get(player.getName()) == VirtualKitRoomAdmin.getCategoryFromSlot(slot)) return;
-            openMenu(player, VirtualKitRoomAdmin.getCategoryFromSlot(slot), oldCurrentKit.get(player.getName()));
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1F, 2F);
-        }else if(slot == 53) {
+        }else if(slot == 46) {
             int category = currentCategory.get(player.getName()); int currentKit = oldCurrentKit.get(player.getName());
             openMenu(player, category, currentKit);
             player.playSound(player.getLocation(), Sound.ITEM_BOTTLE_FILL, 1F, 1F);
+        }else if(Utils.isBetweenEquals(slot, 48, 53)) {
+            if(VirtualKitRoom.currentCategory.get(player.getName()) == VirtualKitRoomAdmin.getCategoryFromSlot(slot)) return;
+            openMenu(player, VirtualKitRoomAdmin.getCategoryFromSlot(slot), oldCurrentKit.get(player.getName()));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1F, 2F);
         }
     }
 
@@ -93,7 +93,7 @@ public class VirtualKitRoom implements Listener {
         Main.logInfo("Loading the Virtual Kit Room...");
         long mss = System.currentTimeMillis();
         try {
-            for(int categoryNumber=1; categoryNumber<6; categoryNumber++) {
+            for(int categoryNumber=1; categoryNumber<7; categoryNumber++) {
                 Inventory inventory = Bukkit.createInventory(Bukkit.getPlayerExact("CyberedCake"), 9*6, Component.text("Virtual Kit Room (" + categoryNumber + "/5)"));
 
                 for(int i=0; i<45; i++) {
@@ -105,12 +105,14 @@ public class VirtualKitRoom implements Listener {
                 }
 
                 inventory.setItem(45, ItemUtils.createBasicItemStack(Material.ARROW, 1, "&bGo Back", CommandManager.emptyList));
+                inventory.setItem(46, ItemUtils.createBasicItemStack(Material.CLOCK, 1, "&bRefill Menu", CommandManager.emptyList));
 
-                inventory.setItem(47, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
-                inventory.setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
-                inventory.setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
-                inventory.setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
-                inventory.setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+                inventory.setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
+                inventory.setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
+                inventory.setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
+                inventory.setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
+                inventory.setItem(52, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+                inventory.setItem(53, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat6.item"));
 
                 ItemStack currentCategory = DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat" + categoryNumber + ".item");
                 ItemMeta currentCategoryMeta = currentCategory.getItemMeta();
@@ -120,8 +122,6 @@ public class VirtualKitRoom implements Listener {
                 currentCategoryMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DYE);
                 currentCategory.setItemMeta(currentCategoryMeta);
                 inventory.setItem(VirtualKitRoomAdmin.getSlotFromCategory(categoryNumber), currentCategory);
-
-                inventory.setItem(53, ItemUtils.createBasicItemStack(Material.CLOCK, 1, "&bRefill Menu", CommandManager.emptyList));
 
                 VirtualKitRoom.cachedKitRoomItems.put(categoryNumber, inventory);
 

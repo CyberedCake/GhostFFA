@@ -97,14 +97,14 @@ public class ChatEvent implements Listener {
 
         if(!(player.hasPermission("ghostffa.bypass.chatcooldown")) && (System.currentTimeMillis()-lastChat.get(player.getName())) <= Main.getMainConfig().getLong("chatCooldown")) {
             //long cooldown = (lastChat.get(player.getName())-System.currentTimeMillis()+Main.getMainConfig().getLong("chatCooldown")+1000)/1000;
-            TextComponent msgToPlayer = new TextComponent(Utils.chat(Utils.getFormattedName(player) + " &f> &c") + ChatColor.stripColor(msg));
+            TextComponent msgToPlayer = new TextComponent(Utils.chat(Utils.getFormattedName(player) + "&f: &c") + ChatColor.stripColor(msg));
             msgToPlayer.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6This message &ehas been &cremoved &efor potential spam!\n&8(Too many messages within short period of time)"))));
             player.sendMessage(msgToPlayer);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
             e.setCancelled(true);
             return; }
         if(!(player.hasPermission("ghostffa.bypass.chatsimilar")) && (lastChatContents.get(player.getName()).equals(e.getMessage()))) {
-            TextComponent msgToPlayer = new TextComponent(Utils.chat(Utils.getFormattedName(player) + " &f> &c") + ChatColor.stripColor(msg));
+            TextComponent msgToPlayer = new TextComponent(Utils.chat(Utils.getFormattedName(player) + "&f: &c") + ChatColor.stripColor(msg));
             msgToPlayer.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6This message &ehas been &cremoved &efor potential spam!\n&8(Message too similar to last)"))));
             player.sendMessage(msgToPlayer);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
@@ -113,7 +113,7 @@ public class ChatEvent implements Listener {
 
         lastChat.put(player.getName(), System.currentTimeMillis());
         lastChatContents.put(player.getName(), e.getMessage());
-        e.setFormat(Utils.chat(Utils.getFormattedName(player) + " &f> ") + msg);
+        e.setFormat(Utils.chat(Utils.getFormattedName(player) + "&f: ") + msg);
 
         // Send message to Discord
     }

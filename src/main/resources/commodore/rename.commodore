@@ -1,0 +1,3 @@
+rename {
+  newName brigadier:string greedy_phrase;
+}

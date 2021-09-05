@@ -59,24 +59,25 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
 
     public static void openMenu(Player player, int category) {
         playerEditing = player.getName();
-        Inventory inv = Bukkit.createInventory(player, 9*6, Component.text("Admin: Virtual Kit Room (" + category + "/5)"));
+        Inventory inv = Bukkit.createInventory(player, 9*6, Component.text("Admin: Virtual Kit Room (" + category + "/6)"));
         playerEditing = player.getName();
 
         for(int slot=45; slot<54; slot++) {
-            if(!Utils.isBetweenEquals(slot, 47, 51)) {
+            if(!Utils.isBetweenEquals(slot, 48, 53)) {
                 inv.setItem(slot, ItemUtils.createBasicItemStack(Material.CYAN_STAINED_GLASS_PANE, 1, "&r", CommandManager.emptyList));
             }
         }
 
         inv.setItem(45, ItemUtils.createBasicItemStack(Material.EMERALD_BLOCK, 1, "&bSave Current Kit Room Configuration", CommandManager.emptyList));
 
-        inv.setItem(53, ItemUtils.createBasicItemStack(Material.REDSTONE_TORCH, 1, "&bInformation:", Arrays.asList(ChatPaginator.wordWrap(Utils.chat("&7Categories work like this: You can left click to switch what current category you're on. You can right click to change the name of a category, must be under 30 characters. You can middle click the icon of a category with a block to change the icon."), 40))));
+        inv.setItem(46, ItemUtils.createBasicItemStack(Material.REDSTONE_TORCH, 1, "&bInformation:", Arrays.asList(ChatPaginator.wordWrap(Utils.chat("&7Categories work like this: You can left click to switch what current category you're on. You can right click to change the name of a category, must be under 30 characters. You can middle click the icon of a category with a block to change the icon."), 40))));
 
-        inv.setItem(47, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
         inv.setItem(48, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
         inv.setItem(49, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
         inv.setItem(50, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
         inv.setItem(51, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
+        inv.setItem(52, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
+        inv.setItem(53, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
 
         player.openInventory(inv);
         playerEditing = player.getName();
@@ -91,11 +92,12 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
                 player.getOpenInventory().setItem(slot, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat" + category + ".slot" + slot));
             }
 
-            player.getOpenInventory().setItem(47, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
-            player.getOpenInventory().setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
-            player.getOpenInventory().setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
-            player.getOpenInventory().setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
-            player.getOpenInventory().setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+            player.getOpenInventory().setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
+            player.getOpenInventory().setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
+            player.getOpenInventory().setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
+            player.getOpenInventory().setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
+            player.getOpenInventory().setItem(52, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+            player.getOpenInventory().setItem(53, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat6.item"));
         }, 10L);
     }
 
@@ -116,7 +118,7 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
 
         if(slot == 45) {
             saveKitRoomConfiguration(player, VirtualKitRoom.currentCategory.get(player.getName()), true);
-        }else if(Utils.isBetweenEquals(slot, 47, 51)) {
+        }else if(Utils.isBetweenEquals(slot, 48, 53)) {
             int getCategoryFromSlot = getCategoryFromSlot(slot);
 
             if(clickType.equals(ClickType.LEFT) || clickType.equals(ClickType.SHIFT_LEFT)) {
@@ -124,11 +126,12 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
 
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1F, 2F);
 
-                player.getOpenInventory().setItem(47, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
                 player.getOpenInventory().setItem(48, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
                 player.getOpenInventory().setItem(49, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
                 player.getOpenInventory().setItem(50, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
                 player.getOpenInventory().setItem(51, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
+                player.getOpenInventory().setItem(52, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
+                player.getOpenInventory().setItem(53, ItemUtils.createBasicItemStack(Material.BEDROCK, 1, "&8Loading...", CommandManager.emptyList));
 
                 Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
                     openMenu(player, getCategoryFromSlot);
@@ -181,24 +184,26 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
     // Maybe find a way to simplify these two methods?
     // They use very bad-looking code
     public static int getCategoryFromSlot(int slot) {
-        if(slot == 47) { return 1; }
-        if(slot == 48) { return 2; }
-        if(slot == 49) { return 3; }
-        if(slot == 50) { return 4; }
-        if(slot == 51) { return 5; }
+        if(slot == 48) { return 1; }
+        if(slot == 49) { return 2; }
+        if(slot == 50) { return 3; }
+        if(slot == 51) { return 4; }
+        if(slot == 52) { return 5; }
+        if(slot == 53) { return 6; }
         return -1;
     }
     public static int getSlotFromCategory(int category) {
-        if(category == 1) { return 47; }
-        if(category == 2) { return 48; }
-        if(category == 3) { return 49; }
-        if(category == 4) { return 50; }
-        if(category == 5) { return 51; }
+        if(category == 1) { return 48; }
+        if(category == 2) { return 49; }
+        if(category == 3) { return 50; }
+        if(category == 4) { return 51; }
+        if(category == 5) { return 52; }
+        if(category == 6) { return 53; }
         return -1;
     }
 
     public static void saveKitRoomConfiguration(Player player, int categoryNumber, boolean showText) {
-        Inventory inventory = Bukkit.createInventory(player, 9*6, Component.text("Virtual Kit Room (" + categoryNumber + "/5)"));
+        Inventory inventory = Bukkit.createInventory(player, 9*6, Component.text("Virtual Kit Room (" + categoryNumber + "/6)"));
 
         for(int i=0; i<45; i++) {
             DataUtils.setCustomYml("data", "kits.virtualKitRoom.categories.cat" + categoryNumber + ".slot" + i, player.getOpenInventory().getItem(i));
@@ -210,12 +215,14 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
         }
 
         inventory.setItem(45, ItemUtils.createBasicItemStack(Material.ARROW, 1, "&bGo Back", CommandManager.emptyList));
+        inventory.setItem(46, ItemUtils.createBasicItemStack(Material.CLOCK, 1, "&bRefill Menu", CommandManager.emptyList));
 
-        inventory.setItem(47, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
-        inventory.setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
-        inventory.setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
-        inventory.setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
-        inventory.setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+        inventory.setItem(48, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat1.item"));
+        inventory.setItem(49, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat2.item"));
+        inventory.setItem(50, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat3.item"));
+        inventory.setItem(51, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat4.item"));
+        inventory.setItem(52, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat5.item"));
+        inventory.setItem(53, DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat6.item"));
 
         ItemStack currentCategory = DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat" + categoryNumber + ".item");
         ItemMeta currentCategoryMeta = currentCategory.getItemMeta();
@@ -225,8 +232,6 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
         currentCategoryMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DYE);
         currentCategory.setItemMeta(currentCategoryMeta);
         inventory.setItem(getSlotFromCategory(categoryNumber), currentCategory);
-
-        inventory.setItem(53, ItemUtils.createBasicItemStack(Material.CLOCK, 1, "&bRefill Menu", CommandManager.emptyList));
 
         VirtualKitRoom.cachedKitRoomItems.put(categoryNumber, inventory);
 
@@ -252,6 +257,8 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
         setIfNull("kits.virtualKitRoom.categories.cat4.categoryName", "Category #4");
         setIfNull("kits.virtualKitRoom.categories.cat5.item", ItemUtils.createBasicItemStack(Material.OAK_LEAVES, 5, "&bCategory #5", CommandManager.emptyList));
         setIfNull("kits.virtualKitRoom.categories.cat5.categoryName", "Category #5");
+        setIfNull("kits.virtualKitRoom.categories.cat6.item", ItemUtils.createBasicItemStack(Material.IRON_INGOT, 6, "&bCategory #6", CommandManager.emptyList));
+        setIfNull("kits.virtualKitRoom.categories.cat6.categoryName", "Category #6");
     }
 
     private static void setIfNull(String path, Object toWhat) { if(DataUtils.getCustomYmlObject("data", path) != null) return; DataUtils.setCustomYml("data", path, toWhat); }

@@ -1,0 +1,9 @@
+worlds {
+  help;
+  list;
+  tp {
+    world brigadier:string single_word {
+      player brigadier:string single_word;
+    }
+  }
+}

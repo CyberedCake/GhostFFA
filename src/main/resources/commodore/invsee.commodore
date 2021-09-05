@@ -1,0 +1,3 @@
+invsee {
+  player brigadier:string single_word;
+}

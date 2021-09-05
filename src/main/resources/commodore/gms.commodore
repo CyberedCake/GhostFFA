@@ -1,0 +1,3 @@
+gms {
+  player brigadier:string single_word;
+}

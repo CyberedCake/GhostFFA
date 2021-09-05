@@ -57,7 +57,7 @@ public class RefreshMenu implements Runnable{
                 }
             }else if(ItemUtils.currentMenu.get(player.getName()).equals(ItemUtils.Menu.ADMIN_VIRTUAL_KIT_ROOM)) {
                 try {
-                    for(int i=1; i<6; i++) {
+                    for(int i=1; i<7; i++) {
                         ItemStack item = DataUtils.getCustomYmlItemStack("data", "kits.virtualKitRoom.categories.cat" + i + ".item");
                         assert item != null;
                         ItemMeta meta = item.getItemMeta();

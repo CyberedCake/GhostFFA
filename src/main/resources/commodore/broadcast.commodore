@@ -1,0 +1,5 @@
+broadcast {
+  audienceType brigadier:string single_word {
+    context brigadier:string greedy_phrase;
+  }
+}

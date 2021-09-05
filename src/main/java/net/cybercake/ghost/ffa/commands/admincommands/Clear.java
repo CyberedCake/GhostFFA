@@ -23,31 +23,29 @@ public class Clear implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!(sender instanceof Player)) {
-            Main.logError("Only players can execute this command!"); return true;
-        }
-
-        Player player = (Player) sender;
-
         if(args.length == 0) {
+            if(!(sender instanceof Player)) {
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid arguments"); return true;
+            }
+            Player player = (Player) sender;
             clearInventory(player, player, "all");
         }else if(args.length == 1) {
             Player target = Bukkit.getPlayerExact(args[0]);
             if(target == null) {
-                Utils.commandStatus(player, Utils.Status.FAILED, "Invalid online player");
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid online player");
             }else{
-                clearInventory(player, target, "all");
+                clearInventory(sender, target, "all");
             }
         }else if(args.length == 2) {
             Player target = Bukkit.getPlayerExact(args[0]);
             if(target == null) {
-                Utils.commandStatus(player, Utils.Status.FAILED, "Invalid online player");
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid online player");
             }else{
                 String argument = args[1];
                 if(!argument.startsWith("minecraft:")) {
                     argument = "minecraft:" + argument;
                 }
-                clearInventory(player, target, argument);
+                clearInventory(sender, target, argument);
             }
         }
 
@@ -55,7 +53,7 @@ public class Clear implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    public static void clearInventory(Player msgTo, Player clearWho, String specificItem) {
+    public static void clearInventory(CommandSender msgTo, Player clearWho, String specificItem) {
         boolean isNull = true;
         for(ItemStack itemStack : clearWho.getInventory()) {
             if(itemStack != null) {
@@ -75,7 +73,7 @@ public class Clear implements CommandExecutor, TabCompleter {
             if (isNull) {
                 Utils.commandStatus(msgTo, Utils.Status.FAILED, (msgTo == clearWho ? "You have" : clearWho.getName() + " has") + " no items to remove from " + (msgTo == clearWho ? "your" : "their") + " inventory");
             }else if(!ItemUtils.mcItems().contains(ItemUtils.toKey(specificItem))) {
-                Utils.commandStatus(msgTo, Utils.Status.FAILED, "Invalid MC item key");
+                Utils.commandStatus(msgTo, Utils.Status.FAILED, "Invalid MC item");
             }else if(!clearWho.getInventory().contains(ItemUtils.mcKeyToMaterial(specificItem))) {
                 Utils.commandStatus(msgTo, Utils.Status.FAILED, (msgTo == clearWho ? "You don't " : clearWho.getName() + " doesn't ") + "have any of that item in their inventory");
             }else{
@@ -88,16 +86,7 @@ public class Clear implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if(args.length == 2){
-            ArrayList<String> withoutMinecraftColon = new ArrayList<>();
-            withoutMinecraftColon.add("minecraft:");
-            for(String material : ItemUtils.mcItems()) {
-                if(args[1].startsWith("minecraft:")) {
-                    withoutMinecraftColon.add(material);
-                } else{
-                    withoutMinecraftColon.add(material.replace("minecraft:", ""));
-                }
-            }
-            return CommandManager.createReturnList(withoutMinecraftColon, args[1]);
+            return ItemUtils.tabCompleteItem(args[1]);
         }else if(args.length == 1) {
             return CommandManager.createReturnList(CommandManager.getPlayerNames(), args[0]);
         }

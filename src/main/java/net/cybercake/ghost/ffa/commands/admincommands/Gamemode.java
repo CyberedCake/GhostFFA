@@ -21,15 +21,17 @@ public class Gamemode implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(!(sender instanceof Player)) {
-            Main.logError("Only players can execute this command!"); return true;
-        }
-
-        Player player = (Player) sender;
-
         if(args.length == 0) {
+            if(!(sender instanceof Player)) {
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid arguments"); return true;
+            }
+            Player player = (Player) sender;
             Utils.commandStatus(player, Utils.Status.FAILED, "Invalid usage");
         }else if(args.length == 1) {
+            if(!(sender instanceof Player)) {
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid arguments"); return true;
+            }
+            Player player = (Player) sender;
             if(args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
                 switchGamemode(player, player, GameMode.CREATIVE, "Creative");
             }else if(args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
@@ -44,24 +46,24 @@ public class Gamemode implements CommandExecutor, TabCompleter {
         }else if(args.length >= 2) {
             Player target = Bukkit.getPlayerExact(args[1]);
             if(target == null) {
-                Utils.commandStatus(player, Utils.Status.FAILED, "Invalid online player");
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid online player");
             }else if(args[0].equalsIgnoreCase("creative") || args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("c")) {
-                switchGamemode(player, target, GameMode.CREATIVE, "Creative");
+                switchGamemode(sender, target, GameMode.CREATIVE, "Creative");
             }else if(args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s")) {
-                switchGamemode(player, target, GameMode.SURVIVAL, "Survival");
+                switchGamemode(sender, target, GameMode.SURVIVAL, "Survival");
             }else if(args[0].equalsIgnoreCase("spectator") || args[0].equalsIgnoreCase("3") || args[0].equalsIgnoreCase("sp") || args[0].equalsIgnoreCase("spec")) {
-                switchGamemode(player, target, GameMode.SPECTATOR, "Spectator");
+                switchGamemode(sender, target, GameMode.SPECTATOR, "Spectator");
             }else if(args[0].equalsIgnoreCase("adventure") || args[0].equalsIgnoreCase("2") || args[0].equalsIgnoreCase("a")) {
-                switchGamemode(player, target, GameMode.ADVENTURE, "Adventure");
+                switchGamemode(sender, target, GameMode.ADVENTURE, "Adventure");
             }else{
-                Utils.commandStatus(player, Utils.Status.FAILED, "Invalid gamemode");
+                Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid gamemode");
             }
         }
 
         return true;
     }
 
-    public static void switchGamemode(Player msgTo, Player switchGamemode, GameMode gameMode, String gamemodeStr){
+    public static void switchGamemode(CommandSender msgTo, Player switchGamemode, GameMode gameMode, String gamemodeStr){
         if(!switchGamemode.getGameMode().equals(gameMode)) {
             switchGamemode.setGameMode(gameMode);
             Utils.commandStatus(msgTo, Utils.Status.INFO, "Set " + (msgTo == switchGamemode ? "own" : switchGamemode.getName() + "'s") + " gamemode to &b" + gamemodeStr + " &fmode!");

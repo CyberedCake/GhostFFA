@@ -1,12 +1,12 @@
 name: GhostFFA
-version: 1.0.0
+version: 1.0.6
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
 description: The main plugin for the Minehut server GhostFFA.minehut.gg
 website: https://twitter.com/trueCyberCake
-depend: [LuckPerms, PlaceholderAPI, FastAsyncWorldEdit, WorldGuard]
-api-version: 1.16
+depend: [LuckPerms, PlaceholderAPI]
+api-version: 1.17
 load: POSTWORLD
 
 commands:
@@ -18,6 +18,10 @@ commands:
     description: The main command for the plugin GhostFFA
     usage: Use /ghostffa help for help!
     aliases: [gffa]
+  worlds:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [world]
   ping:
     description: No description
     usage: An error occurred whilst executing this command!
@@ -34,6 +38,26 @@ commands:
   spawn:
     description: No description
     usage: An error occurred whilst executing this command!
+  rename:
+    description: No description
+    usage: An error occurred whilst executing this command!
+
+  gmc:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [gm1]
+  gma:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [gm2]
+  gmsp:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [gm3]
+  gms:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [gm0]
 
   gamemode:
     description: No description
@@ -42,8 +66,19 @@ commands:
   clear:
     description: No description
     usage: An error occurred whilst executing this command!
-    aliases: [invreset]
+    aliases: [invreset, ci]
   give:
     description: No description
     usage: An error occurred whilst executing this command!
     aliases: [item, i]
+  fly:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [flight]
+  broadcast:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [bc, alert, msgto, messageto]
+  invsee:
+    description: No description
+    usage: An error occurred whilst executing this command!

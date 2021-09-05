@@ -1,11 +1,13 @@
 ghostffa {
   help;
   reload;
-  clearlagadmin {
-    now;
-  }
+  clearlagadmin;
   kitroomadmin;
+  kitroomreload;
   inventorydebug {
     player brigadier:string single_word;
+  }
+  uptime {
+    seconds;
   }
 }

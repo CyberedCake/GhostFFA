@@ -383,12 +383,12 @@ public class Utils {
         String time = "null";
         Map<TimeUnit, Long> timeSince = Utils.getDateDifference(new Date(smallerNumber), new Date(largerNumber));
 
-        if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 31536000 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.SECONDS)*31536000) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 365 == 1) ? " years" : " year");
-        }else if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 2678400 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.SECONDS)*2678400) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 31 == 1) ? " months" : " month");
-        }else if(Math.round(timeSince.get(TimeUnit.SECONDS)) / 604800 >= 1) {
-            time = Math.round(timeSince.get(TimeUnit.SECONDS)*604800) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 7 == 1) ? " weeks" : " week");
+        if(Math.round(timeSince.get(TimeUnit.DAYS)) / 365 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.DAYS)/365) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 365 == 1) ? " year" : " years");
+        }else if(Math.round(timeSince.get(TimeUnit.DAYS)) / 31 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.DAYS)/31) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 31 == 1) ? " month" : " months");
+        }else if(Math.round(timeSince.get(TimeUnit.DAYS)) / 7 >= 1) {
+            time = Math.round(timeSince.get(TimeUnit.DAYS)/7) + ((Math.round(timeSince.get(TimeUnit.DAYS)) / 7 == 1) ? " week" : " weeks");
         }else if(timeSince.get(TimeUnit.DAYS) != 0) {
             time = timeSince.get(TimeUnit.DAYS) + ((timeSince.get(TimeUnit.DAYS) == 1) ? " day" : " days");
         }else if(timeSince.get(TimeUnit.HOURS) != 0) {
@@ -414,6 +414,15 @@ public class Utils {
         }
 
         return time;
+    }
+
+    public static String getStringFromArguments(int startFrom, String[] args) {
+        StringBuilder sm = new StringBuilder();
+        for(int i = startFrom; i < args.length; i++) {
+            String arg = (args[i] + " ");
+            sm.append(arg);
+        }
+        return sm.toString();
     }
 
     public static String getFormattedSeconds(long timeInSeconds, ReturnType returnType, boolean showExtraZeros) {

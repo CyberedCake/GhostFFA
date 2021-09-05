@@ -2,9 +2,11 @@ package net.cybercake.ghost.ffa;
 
 import me.lucko.commodore.CommodoreProvider;
 import net.cybercake.ghost.ffa.commands.*;
-import net.cybercake.ghost.ffa.commands.admincommands.Clear;
-import net.cybercake.ghost.ffa.commands.admincommands.Gamemode;
-import net.cybercake.ghost.ffa.commands.admincommands.Give;
+import net.cybercake.ghost.ffa.commands.admincommands.*;
+import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMA;
+import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMC;
+import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMS;
+import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMSP;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
@@ -21,7 +23,6 @@ import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
@@ -30,7 +31,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -39,15 +39,13 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Map;
 import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
     public static String virtualKitRoomLoaded = "unloaded";
+    public static long unixStarted = 0;
 
     @Override
     public void onEnable() {
@@ -70,25 +68,40 @@ public final class Main extends JavaPlugin {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 400, 1, false, false));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 400, 255, false, false));
             }
+        }else if(Bukkit.getOnlinePlayers().size() == 0 && unixStarted == 0) {
+            unixStarted = Utils.getUnix();
         }
 
-        registerCommandAndTab("ghostffa", new CommandManager(), true);
-        registerCommandAndTab("guislots", new ItemUtils(), true);
-        registerCommandAndTab("ping", new Ping(), true);
-        registerCommandAndTab("discord", new Discord(), true);
-        registerCommandAndTab("kits", new Kits(), true);
-        registerCommandAndTab("clearlag", new ClearLagCMD(), true);
-        registerCommandAndTab("spawn", new Spawn(), true);
+        boolean loadCommodore = false;
+        registerCommandAndTab("ghostffa", new CommandManager(), loadCommodore);
+        registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.worldscommand.CommandManager(), loadCommodore);
+        registerCommandAndTab("guislots", new ItemUtils(), loadCommodore);
+        registerCommandAndTab("ping", new Ping(), loadCommodore);
+        registerCommandAndTab("discord", new Discord(), loadCommodore);
+        registerCommandAndTab("kits", new Kits(), loadCommodore);
+        registerCommandAndTab("clearlag", new ClearLagCMD(), loadCommodore);
+        registerCommandAndTab("spawn", new Spawn(), loadCommodore);
+        registerCommandAndTab("rename", new Rename(), loadCommodore);
+        // Gamemode commands
+        registerCommandAndTab("gmc", new GMC(), loadCommodore);
+        registerCommandAndTab("gms", new GMS(), loadCommodore);
+        registerCommandAndTab("gmsp", new GMSP(), loadCommodore);
+        registerCommandAndTab("gma", new GMA(), loadCommodore);
         // Admin commands
-        registerCommandAndTab("gamemode", new Gamemode(), true);
-        registerCommandAndTab("clear", new Clear(), true);
-        registerCommandAndTab("give", new Give(), true);
+        registerCommandAndTab("gamemode", new Gamemode(), loadCommodore);
+        registerCommandAndTab("clear", new Clear(), loadCommodore);
+        registerCommandAndTab("give", new Give(), loadCommodore);
+        registerCommandAndTab("fly", new Fly(), loadCommodore);
+        registerCommandAndTab("broadcast", new Broadcast(), loadCommodore);
+        registerCommandAndTab("invsee", new InvSee(), loadCommodore);
 
         if(CommodoreProvider.isSupported()) {
             try {
-                RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginManager().getPlugin("PlugMan").getServer().getPluginCommand("plugman"), "plugman");
+                if(!(Bukkit.getPluginManager().getPlugin("PlugMan") == null) && Bukkit.getPluginManager().getPlugin("PlugMan").isEnabled()) {
+                    RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginManager().getPlugin("PlugMan").getServer().getPluginCommand("plugman"), "plugman");
+                }
             } catch (IOException e) {
-                logError(getPluginPrefix() + " An error occurred whilst loading brigadier/commodore command: /guislots");
+                logError(getPluginPrefix() + " An error occurred whilst loading brigadier/commodore command: /plugman");
             }
         }
 

@@ -72,6 +72,9 @@ public class Spawn implements CommandExecutor, TabCompleter {
                 for(World world : Bukkit.getWorlds()) {
                     allWorlds.add(world.getName());
                 }
+                if(allWorlds.contains(args[6])) {
+                    return CommandManager.emptyList;
+                }
                 return CommandManager.createReturnList(allWorlds, args[6]);
             }else if(args.length == 6) {
                 return CommandManager.createReturnList(Collections.singletonList("" + Math.round(player.getLocation().getPitch())), args[5]);

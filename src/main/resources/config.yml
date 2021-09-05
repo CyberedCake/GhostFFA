@@ -7,21 +7,10 @@
 
 blockedCommands:
   bypassPermission: ghostffa.bypass.blockedcommands
-  whitelisted:
-    - 'duel'
-    - 'spectate'
-    - 'games'
-    - 'discord'
-    - 'ping'
-    - 'kits'
-    - 'k'
-    - 'kit'
-    - 'clearlag'
-    - 'spawn'
+  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn']
 builtInClearLag:
   interval: 600 # in seconds
   showConsoleMessages: true
-  worldsCleared: ['world'] # case insensitive
 join: # PlaceholderAPI works here
   - '{seperator}'
   - '&fWelcome to &b&lGhostFFA'
@@ -34,3 +23,5 @@ disabledKickMessages: # if a kick message contains this, it will not kick them f
   - 'Kicked for spamming'
   - 'Illegal characters in chat'
 chatCooldown: 1000 # in miliseconds
+blockCleanup:
+  ffa1: ['ANCHORS', 'GLOW_STONE', 'ENDER_CRYSTALS', 'OBSIDIAN', 'CRAFTING_TABLES', 'ICE', 'COBWEBS', 'ENDER_CHEST', 'ANVIL']

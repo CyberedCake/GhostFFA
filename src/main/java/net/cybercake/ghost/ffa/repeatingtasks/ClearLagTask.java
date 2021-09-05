@@ -33,8 +33,7 @@ public class ClearLagTask implements Runnable {
 
     public static int clearGroundItems() {
         int items = 0;
-        for(String worldString : Main.getMainConfig().getStringList("builtInClearLag.worldsCleared")) {
-            World world = Bukkit.getWorld(worldString);
+        for(World world : Bukkit.getWorlds()) {
             for(Item item : world.getEntitiesByClass(Item.class)) {
                 items++;
                 item.remove();
