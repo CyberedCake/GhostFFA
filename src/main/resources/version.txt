@@ -1,0 +1,2 @@
+latestVersion=1.6
+protocolVersion=6
