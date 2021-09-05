@@ -16,7 +16,7 @@ import java.util.List;
 public class ClearLagAdmin extends SubCommand {
 
     public ClearLagAdmin() {
-        super("clearlagadmin", "ghostffa.subcommand.clearlagadmin", "Set the clearlag time or set to instant clearlag.", "/ghostffa clearlagadmin", new String[]{"clearlag", "cl"});
+        super("clearlagnow", "ghostffa.subcommand.clearlagnow", "Set the clearlag time or set to instant clearlag.", "/ghostffa clearlagnow", new String[]{"clearlag", "cl", "clearlagadmin"});
     }
 
     @Override

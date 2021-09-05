@@ -1,6 +1,6 @@
 name: GhostFFA
-version: 1.7
-version-protocol: 7
+version: 1.8
+version-protocol: 8
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]

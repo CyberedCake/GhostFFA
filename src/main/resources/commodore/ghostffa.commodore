@@ -1,7 +1,7 @@
 ghostffa {
   help;
   reload;
-  clearlagadmin;
+  clearlagnow;
   kitroomadmin;
   kitroomreload;
   inventorydebug {
@@ -10,4 +10,5 @@ ghostffa {
   uptime {
     seconds;
   }
+  version;
 }

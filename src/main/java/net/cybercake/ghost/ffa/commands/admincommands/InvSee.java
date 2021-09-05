@@ -23,7 +23,7 @@ public class InvSee implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        String message = Utils.getStringFromArguments(1, args);
+        String message = Utils.getStringFromArguments(0, args);
         player.performCommand("openinv " + message);
 
         return true;

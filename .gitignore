@@ -112,4 +112,6 @@ buildNumber.properties
 # Common working directory
 run/
 
-target/
+# Remove target folder
+*/target/*
+*/target/**

@@ -41,7 +41,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if(getSubCommandsOnlyWithPerms(sender).size() <= 1) {
             sender.sendMessage(Utils.chat(noPermissionMsg));
         }else if(args.length == 0) {
-            printHelpMsg(sender);
+            getSubCommand("list").perform(sender, args, command);
         }else if(args.length > 0) {
             boolean ran = false;
             if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("info")) {

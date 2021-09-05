@@ -31,13 +31,13 @@ public class ChatEvent implements Listener {
 
     @EventHandler
     public void onChat(PlayerChatEvent e) {
+        e.setCancelled(true);
+
         Player player = e.getPlayer();
         String msg = e.getMessage();
 
         // Cancel events to prevent typing in actual chat when you are changing names of stuff (i.e. category names)
         if(VirtualKitRoomAdmin.typeInChat.get(player.getName()) != null) {
-            e.setCancelled(true);
-
             try {
                 if(Main.virtualKitRoomLoaded.equalsIgnoreCase("unloaded")) {
                     player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 2F);
@@ -101,19 +101,21 @@ public class ChatEvent implements Listener {
             msgToPlayer.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6This message &ehas been &cremoved &efor potential spam!\n&8(Too many messages within short period of time)"))));
             player.sendMessage(msgToPlayer);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
-            e.setCancelled(true);
             return; }
         if(!(player.hasPermission("ghostffa.bypass.chatsimilar")) && (lastChatContents.get(player.getName()).equals(e.getMessage()))) {
             TextComponent msgToPlayer = new TextComponent(Utils.chat(Utils.getFormattedName(player) + "&f: &c") + ChatColor.stripColor(msg));
             msgToPlayer.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(Utils.chat("&6This message &ehas been &cremoved &efor potential spam!\n&8(Message too similar to last)"))));
             player.sendMessage(msgToPlayer);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
-            e.setCancelled(true);
             return; }
 
         lastChat.put(player.getName(), System.currentTimeMillis());
         lastChatContents.put(player.getName(), e.getMessage());
-        e.setFormat(Utils.chat(Utils.getFormattedName(player) + "&f: ") + msg);
+        String format = Utils.chat(Utils.getFormattedName(player) + "&f: ") + msg;
+        for(Player player1 : Bukkit.getOnlinePlayers()) {
+            player1.sendMessage(format);
+        }
+        Bukkit.getLogger().info("[GhostFFA Chat] " + format);
 
         // Send message to Discord
     }

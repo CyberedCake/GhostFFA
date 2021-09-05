@@ -62,8 +62,10 @@ public class Version extends SubCommand {
                sender.sendMessage(Utils.chat("&aYou are running the latest version"));
           }else if(latestProtocol > yourProtocol) {
                sender.sendMessage(Utils.chat("&eYou are " + (latestProtocol-yourProtocol) + " version(s) behind"));
+               sender.sendMessage(Utils.chat("&7&oLatest plugin version: GhostFFA version " + latestVersion + ", protocol " + latestProtocol));
           }else if(latestProtocol < yourProtocol) {
                sender.sendMessage(Utils.chat("&aYou are " + (yourProtocol-latestProtocol) + " &aversion(s) ahead"));
+               sender.sendMessage(Utils.chat("&7&oSomething isn't right... contact CyberCake#9221 on Discord!"));
           }else{
                sender.sendMessage(Utils.chat("&cError obtaining version difference information"));
           }
