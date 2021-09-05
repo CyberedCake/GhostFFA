@@ -36,6 +36,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subcommands.add(new InventoryDebug());
         subcommands.add(new VirtualKitRoomAdmin());
         subcommands.add(new ServerUptime());
+        subcommands.add(new Version());
     }
 
     // Note for later: please clan this up and remove the arrow code :D

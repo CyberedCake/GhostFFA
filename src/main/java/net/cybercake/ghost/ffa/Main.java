@@ -72,7 +72,7 @@ public final class Main extends JavaPlugin {
             unixStarted = Utils.getUnix();
         }
 
-        boolean loadCommodore = false;
+        boolean loadCommodore = true;
         registerCommandAndTab("ghostffa", new CommandManager(), loadCommodore);
         registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.worldscommand.CommandManager(), loadCommodore);
         registerCommandAndTab("guislots", new ItemUtils(), loadCommodore);
