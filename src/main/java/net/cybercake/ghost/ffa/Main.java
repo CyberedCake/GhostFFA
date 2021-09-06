@@ -129,7 +129,7 @@ public final class Main extends JavaPlugin {
         registerRunnable(new RefreshMenu(), 20L);
         registerRunnable(new ResetInvClickCooldown(), 5L);
 
-        if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false) != null) {
+        if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds") != null) {
             for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
                 logInfo("Attempting to load the world " + world + "... please wait!");
                 Load.loadWorld(world);
@@ -162,7 +162,7 @@ public final class Main extends JavaPlugin {
 
         if(!loadCommodore) {
             Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
-                broadcastFormatted("Please note that this is a developmental version of the plugin. Use at extreme caution and make backups!", true);
+                broadcastFormatted("Please note that this is a developmental version of the plugin. Use extreme caution and make backups!", true);
             }, 80L);
         }
     }

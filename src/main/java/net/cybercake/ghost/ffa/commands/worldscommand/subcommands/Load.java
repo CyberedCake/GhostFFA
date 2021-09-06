@@ -49,7 +49,7 @@ public class Load extends SubCommand {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "World already loaded with that name"); return;
             }else{
                 File file = new File(Paths.get("").toAbsolutePath() + "/" + args[1]);
-                if(file.exists() && !(Arrays.asList(file.listFiles()).contains("level.dat"))) {
+                if(file.exists() && !(folderHasDat(file))) {
                     Utils.commandStatus(sender, Utils.Status.FAILED, "File specified does not look like a world"); return;
                 }
             }
@@ -84,14 +84,7 @@ public class Load extends SubCommand {
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
         if(args.length == 2) {
-            ArrayList<String> files = new ArrayList<>();
-            File file = new File(Paths.get("").toAbsolutePath() + "");
-            for(File file1 : file.listFiles()) {
-                if(!Arrays.asList(file1.listFiles()).contains("level.dat")) {
-                    files.add(file1.getName());
-                }
-            }
-            return files;
+            return CommandManager.createReturnList(allWorldsPlusUnloaded(true), args[1]);
         }else if(args.length == 3) {
             ArrayList<String> types = new ArrayList<>();
             for(WorldType type : WorldType.values()) {
@@ -102,8 +95,31 @@ public class Load extends SubCommand {
         return CommandManager.emptyList;
     }
 
+    public static ArrayList<String> allWorldsPlusUnloaded(boolean onlyUnloaded) {
+        ArrayList<String> worlds = new ArrayList<>();
+        for(String normalFolder : new File(Paths.get("").toAbsolutePath() + "/").list()) {
+            if(onlyUnloaded) {
+                if(folderHasDat(new File(Paths.get("").toAbsolutePath() + "/" + normalFolder + "/")) && Bukkit.getWorld(normalFolder) == null) {
+                    worlds.add(normalFolder);
+                }
+            }else{
+                if(folderHasDat(new File(Paths.get("").toAbsolutePath() + "/" + normalFolder + "/"))) {
+                    worlds.add(normalFolder);
+                }
+            }
+        }
+        return worlds;
+    }
+
+    public static boolean folderHasDat(File worldFolder) {
+        File[] files = worldFolder.listFiles((file, name) -> name.toLowerCase(Locale.ROOT).endsWith(".dat"));
+        return files != null && files.length > 0;
+    }
+
     public static void loadWorld(String worldName) {
         if(Bukkit.getWorld(worldName) != null) {
+            DataUtils.setCustomYml("worlds", "worlds." + worldName, null);
+            Main.logError("An error occurred whilst trying to load the world " + worldName + " [...] world doesn't exist! (removing from \"worlds.yml\"...)");
             return;
         }
 
