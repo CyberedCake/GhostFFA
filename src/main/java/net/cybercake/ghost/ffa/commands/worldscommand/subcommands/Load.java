@@ -22,7 +22,7 @@ import java.util.Locale;
 public class Load extends SubCommand {
 
     public Load() {
-        super("load", "ghostffa.worlds.load", "Loads a specific world.", "/worlds load <worldName>", "import", "create");
+        super("load", "ghostffa.worlds.load", "Loads a specific world.", "/worlds load <worldName> <worldType>", "import", "create");
     }
 
     @Override

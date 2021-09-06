@@ -1,6 +1,6 @@
 name: GhostFFA
-version: 1.9.1
-version-protocol: 10
+version: 1.9.2
+version-protocol: 11
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
@@ -22,7 +22,7 @@ commands:
   worlds:
     description: No description
     usage: An error occurred whilst executing this command!
-    aliases: [world]
+    aliases: [world, w]
   ping:
     description: No description
     usage: An error occurred whilst executing this command!

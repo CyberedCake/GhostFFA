@@ -48,10 +48,10 @@ public class List extends SubCommand {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid world, must be an active and valid world"); return;
             }
             sender.sendMessage(Utils.getSeperator(ChatColor.BLUE));
-            Utils.sendCenteredMessage(sender, "&d&lWORLD \"" + args[1].toUpperCase(Locale.ROOT) + "\"&d&l'S PLAYERS");
+            Utils.sendCenteredMessage(sender, "&d&lWORLD &e&l" + args[1].toUpperCase(Locale.ROOT) + "&d&l'S PLAYERS");
 
             BaseComponent bigComponentBoy = new TextComponent(Utils.chat(""));
-            int index = 0;
+            int index = 1;
             for(Player player : Bukkit.getWorld(args[1]).getPlayers()) {
                 TextComponent component = new TextComponent(Utils.chat("&b" + player.getName()));
 
@@ -61,7 +61,7 @@ public class List extends SubCommand {
                 TextComponent comma = new TextComponent(Utils.chat("&f, "));
 
                 BaseComponent combined = component;
-                if(index == Bukkit.getWorld(args[1]).getPlayers().size()) {
+                if(index < Bukkit.getWorld(args[1]).getPlayers().size()) {
                     combined.addExtra(comma);
                 }
 

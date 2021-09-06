@@ -46,16 +46,20 @@ public class Spawn implements CommandExecutor, TabCompleter {
                     Location location = new Location(world, Double.parseDouble(args[1]), Double.parseDouble(args[2]), Double.parseDouble(args[3]), Float.parseFloat(args[4]), Float.parseFloat(args[5]));
 
                     DataUtils.setCustomYml("data", "generic.spawnLocation", location);
-                    Utils.commandStatus(player, Utils.Status.SUCCESS, "&fSet spawn to location: &3x=" + args[1] + " &ey=" + args[2] + " &az=" + args[3] + " &dyaw=" + args[4] + " &6pitch=" + args[5] + " &3world=" + args[6]);
+                    location.getWorld().setSpawnLocation(location);
+                    Utils.commandStatus(player, Utils.Status.INFO, "&fSet spawn to location: &3x=" + args[1] + " &ey=" + args[2] + " &az=" + args[3] + " &dyaw=" + args[4] + " &6pitch=" + args[5] + " &3world=" + args[6]);
 
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 2F);
                     return true;
                 }
+                player.getWorld().setSpawnLocation(player.getLocation());
                 DataUtils.setCustomYml("data", "generic.spawnLocation", player.getLocation());
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1F, 1F);
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 2F);
                 Utils.commandStatus(player, Utils.Status.INFO, "Set spawn to your location");
+                return true;
             }
             player.teleport(DataUtils.getCustomYmlLocation("data", "generic.spawnLocation"));
-            player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_GENERIC, 1F, 1F);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1F, 1F);
         } catch (Exception exception) {
             Utils.error(player, "whilst trying to warp {name} to spawn", exception);
         }

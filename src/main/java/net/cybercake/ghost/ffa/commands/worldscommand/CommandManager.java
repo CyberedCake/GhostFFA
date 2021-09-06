@@ -37,6 +37,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subcommands.add(new Delete());
         subcommands.add(new Unload());
         subcommands.add(new Gamerule());
+        subcommands.add(new SetSpawn());
     }
 
     // Note for later: please clan this up and remove the arrow code :D
@@ -46,7 +47,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if(getSubCommandsOnlyWithPerms(sender).size() <= 1) {
             sender.sendMessage(Utils.chat(noPermissionMsg));
         }else if(args.length == 0) {
-            getSubCommand("list").perform(sender, args, command);
+            getSubCommand("list").perform(sender, new String[]{""}, command);
         }else if(args.length > 0) {
             boolean ran = false;
             if(args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("info")) {
