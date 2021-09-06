@@ -1,6 +1,6 @@
 name: GhostFFA
-version: 1.8
-version-protocol: 8
+version: 1.9
+version-protocol: 9
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
@@ -42,6 +42,10 @@ commands:
   rename:
     description: No description
     usage: An error occurred whilst executing this command!
+  seen:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [lastonline, lastseen, lastoffline]
 
   gmc:
     description: No description
@@ -83,3 +87,7 @@ commands:
   invsee:
     description: No description
     usage: An error occurred whilst executing this command!
+  steleport:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    aliases: [stp]

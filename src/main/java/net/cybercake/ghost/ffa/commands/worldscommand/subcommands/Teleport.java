@@ -17,7 +17,7 @@ import java.util.List;
 public class Teleport extends SubCommand {
 
     public Teleport() {
-        super("tp", "ghostffa.worlds.teleport", "Teleports you or another player to a world", "/worlds tp <world> [player]", new String[]{"teleport"});
+        super("tp", "ghostffa.worlds.teleport", "Teleports you or another player to a world.", "/worlds tp <world> [player]", new String[]{"teleport"});
     }
 
     @Override

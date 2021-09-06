@@ -12,6 +12,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +33,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         subcommands.add(new Help());
         subcommands.add(new net.cybercake.ghost.ffa.commands.worldscommand.subcommands.List());
         subcommands.add(new Teleport());
+        subcommands.add(new Load());
+        subcommands.add(new Delete());
+        subcommands.add(new Unload());
+        subcommands.add(new Gamerule());
     }
 
     // Note for later: please clan this up and remove the arrow code :D
@@ -194,6 +199,27 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
         }
         return emptyList;
+    }
+
+    public static boolean worldExist(String name) {
+        if(Bukkit.getWorld(name) != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean deleteWorld(File path) {
+        if(path.exists()) {
+            File files[] = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    deleteWorld(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
     }
 
     public static List<String> createReturnList(List<String> completions, String currentArg) {

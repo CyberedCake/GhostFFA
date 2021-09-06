@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="GhostFFA:jar">
-    <output-path>$PROJECT_DIR$/../../MinecraftServers/Test Server (External)/plugins</output-path>
+    <output-path>$PROJECT_DIR$/../../MinecraftServers/GhostFFA Testing/plugins</output-path>
     <root id="archive" name="GhostFFA.jar">
       <element id="module-output" name="GhostFFA" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/nbt-data-api/2.8.0/nbt-data-api-2.8.0.jar" path-in-jar="/" />

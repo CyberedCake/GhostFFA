@@ -17,6 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
@@ -110,12 +111,14 @@ public class KitViewer implements Listener {
                 clearKitConfiguration(p, currentKit.get(p.getName()));
                 p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1F, 1F);
                 secondsLeftClearKit.remove(p.getName());
-                Bukkit.getScheduler().cancelTask(this.assignedTaskId);
+                if(assignedTaskId != null) {
+                    Bukkit.getScheduler().cancelTask(this.assignedTaskId);
+                }
                 p.getOpenInventory().setItem(47, ItemUtils.createBasicItemStack( Material.WATER_BUCKET, 1, "&bClear Kit", CommandManager.emptyList));
                 return;
             }
             secondsLeftClearKit.put(p.getName(), 5);
-            this.assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new Runnable() {
+            assignedTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(), new BukkitRunnable() {
                 @Override
                 public void run() {
                     if(secondsLeftClearKit.get(p.getName()) == null || secondsLeftClearKit.get(p.getName()) < 1) {
@@ -125,7 +128,8 @@ public class KitViewer implements Listener {
 
                         p.playSound(p.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 2F);
                         p.getOpenInventory().setItem(47, ItemUtils.createBasicItemStack( Material.WATER_BUCKET, 1, "&bClear Kit", CommandManager.emptyList));
-                        Bukkit.getScheduler().cancelTask(assignedTaskId);
+                        cancel();
+                        Bukkit.getServer().getScheduler().cancelTask(assignedTaskId);
                         return;
                     }
                     p.getOpenInventory().setItem(47, ItemUtils.createBasicShinyItemStack(Material.WATER_BUCKET, secondsLeftClearKit.get(p.getName()), "&aClear Kit?", Arrays.asList("paginate:&7&oClick here to clear this kit's contents!:&7", " ", "paginate:&fYou have &b" + secondsLeftClearKit.get(p.getName()) + " &b" + (secondsLeftClearKit.get(p.getName()) != 1 ? "seconds" : "second") + " &fto confirm!:&f")));

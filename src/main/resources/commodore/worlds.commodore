@@ -1,9 +1,32 @@
 worlds {
   help;
-  list;
+  list {
+    world brigadier:string single_word;
+  }
   tp {
     world brigadier:string single_word {
       player brigadier:string single_word;
     }
+  }
+  load {
+    world brigadier:string single_word {
+      amplified;
+      default;
+      flat;
+      largebiomes;
+    }
+  }
+  delete {
+    world brigadier:string single_word;
+  }
+  gamerule {
+    gamerule brigadier:string single_word {
+      value brigadier:string single_word {
+        world brigadier:string single_word;
+      }
+    }
+  }
+  unload {
+    world brigadier:string single_word;
   }
 }

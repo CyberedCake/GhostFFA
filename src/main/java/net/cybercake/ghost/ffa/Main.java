@@ -10,6 +10,7 @@ import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMSP;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
+import net.cybercake.ghost.ffa.commands.worldscommand.subcommands.Load;
 import net.cybercake.ghost.ffa.listeners.*;
 import net.cybercake.ghost.ffa.menus.kits.KitPreviewer;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
@@ -18,12 +19,14 @@ import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.cybercake.ghost.ffa.repeatingtasks.ClearLagTask;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.RefreshMenu;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.ResetInvClickCooldown;
+import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -36,9 +39,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.util.Properties;
 import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
@@ -82,6 +84,7 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("clearlag", new ClearLagCMD(), loadCommodore);
         registerCommandAndTab("spawn", new Spawn(), loadCommodore);
         registerCommandAndTab("rename", new Rename(), loadCommodore);
+        registerCommandAndTab("seen", new Seen(), loadCommodore);
         // Gamemode commands
         registerCommandAndTab("gmc", new GMC(), loadCommodore);
         registerCommandAndTab("gms", new GMS(), loadCommodore);
@@ -94,6 +97,7 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("fly", new Fly(), loadCommodore);
         registerCommandAndTab("broadcast", new Broadcast(), loadCommodore);
         registerCommandAndTab("invsee", new InvSee(), loadCommodore);
+        registerCommandAndTab("steleport", new STeleport(), loadCommodore);
 
         if(CommodoreProvider.isSupported()) {
             try {
@@ -125,6 +129,13 @@ public final class Main extends JavaPlugin {
         registerRunnable(new RefreshMenu(), 20L);
         registerRunnable(new ResetInvClickCooldown(), 5L);
 
+        if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false) != null) {
+            for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
+                logInfo("Attempting to load the world " + world + "... please wait!");
+                Load.loadWorld(world);
+            }
+        }
+
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
             player.sendTitle(" ", Utils.chat("&aReload complete in &b" + Utils.formatLong(System.currentTimeMillis()-mss) + "&bms&a!"), 10, 80, 10);
@@ -145,11 +156,14 @@ public final class Main extends JavaPlugin {
                 VirtualKitRoom.loadVirtualKitRoom(true);
             });
         } catch (Exception exception) {
-            logError(getPluginPrefix() + " An error occurred whilst loading the Virtual Kit Room: " + exception);
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                if (player.hasPermission("ghostffa.*")) {
-                    player.sendMessage(Utils.chat("&4[Server Error] &cFailed to load the Virtual Kit Room: " + exception));
-                }});
+            Utils.error(Bukkit.getPlayerExact("CyberedCake"), "whilst trying to load the Virtual Kit Room", exception);
+            broadcastFormatted("&4[Server Error] &cFailed to load the Virtual Kit Room: " + exception, true);
+        }
+
+        if(!loadCommodore) {
+            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
+                broadcastFormatted("Please note that this is a developmental version of the plugin. Use at extreme caution and make backups!", true);
+            }, 80L);
         }
     }
 
@@ -205,6 +219,17 @@ public final class Main extends JavaPlugin {
     public static void logInfo(String msg) { Bukkit.getLogger().info(getPluginPrefix() + " " + msg); }
     public static void logWarn(String msg) { Bukkit.getLogger().warning(getPluginPrefix() + " " + msg); }
     public static void logError(String msg) { Bukkit.getLogger().severe(msg); }
+    public static World getMainWorld() {
+        Properties pr = new Properties();
+        try {
+            FileInputStream in = new FileInputStream("server.properties");
+            pr.load(in);
+            String string = pr.getProperty("level-name");
+            return Bukkit.getWorld(string);
+        }
+        catch (IOException e) { }
+        return null;
+    }
 
     private static void registerCommandAndTab(String name, Object commandExecutor, boolean withCommodore) {
         try {

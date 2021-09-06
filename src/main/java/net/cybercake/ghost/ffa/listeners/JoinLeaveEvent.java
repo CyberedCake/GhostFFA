@@ -3,6 +3,7 @@ package net.cybercake.ghost.ffa.listeners;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
+import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
@@ -13,6 +14,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.ArrayList;
 
 public class JoinLeaveEvent implements Listener {
 
@@ -28,7 +31,12 @@ public class JoinLeaveEvent implements Listener {
                 PlayerDataUtils.setPlayerData(player, "kits." + i + ".lastSetTime", 0);
             }
         }
+        ArrayList<String> names = new ArrayList<>();
+        names.addAll(DataUtils.getCustomYmlStringList("playerdata/-allnames", "names"));
+        names.add(player.getName());
+        DataUtils.setCustomYml("playerdata/-allnames", "names", names);
         PlayerDataUtils.setPlayerData(player, "joinLeave.joinDate", Utils.getUnix());
+        PlayerDataUtils.setPlayerData(player, "generic.username", player.getName());
         ChatEvent.lastChat.put(player.getName(), System.currentTimeMillis());
 
         // Message when player joins
