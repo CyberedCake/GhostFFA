@@ -40,7 +40,7 @@ public class Delete extends SubCommand {
 
             for(Player player : Bukkit.getOnlinePlayers()) {
                 if(player.getWorld().equals(Bukkit.getWorld(args[1]))) {
-                    player.teleport(Main.getMainWorld().getSpawnLocation());
+                    player.teleport(SetSpawn.getWorldSpawn(Main.getMainWorld()));
                 }
             }
 

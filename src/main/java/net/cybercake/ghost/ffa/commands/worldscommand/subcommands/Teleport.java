@@ -3,6 +3,7 @@ package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Teleport extends SubCommand {
 
     public Teleport() {
-        super("tp", "ghostffa.worlds.teleport", "Teleports you or another player to a world.", "/worlds tp <world> [player]", new String[]{"teleport"});
+        super("tp", "ghostffa.worlds.teleport", "Teleports you or another player to a world.", "/worlds tp <world> [player]", new String[]{"teleport", "spawn"});
     }
 
     @Override
@@ -29,7 +30,8 @@ public class Teleport extends SubCommand {
         Player player = (Player) sender;
 
         if(args.length == 1) {
-            Utils.commandStatus(player, Utils.Status.FAILED, "Invalid arguments");
+            teleportPlayers(player, player, player.getWorld());
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
         }else if(args.length == 2) {
             World world = Bukkit.getWorld(args[1]);
             if(world == null) {
@@ -53,7 +55,7 @@ public class Teleport extends SubCommand {
     }
 
     public static void teleportPlayers(Player msgTo, Player teleportWho, World worldSpawn) {
-        teleportWho.teleport(worldSpawn.getSpawnLocation());
+        teleportWho.teleport(SetSpawn.getWorldSpawn(worldSpawn));
         Utils.commandStatus(msgTo, Utils.Status.INFO, "You teleported " + (msgTo == teleportWho ? "yourself" : teleportWho.getName()) + " to &b" + worldSpawn.getName() + "&f's spawn");
     }
 

@@ -62,16 +62,18 @@ public class Load extends SubCommand {
             if(Bukkit.getWorld(args[1]) != null) {
                 Utils.commandStatus(sender, Utils.Status.SUCCESS, "&fSuccessfully created or loaded new world named &b" + args[1]);
 
-                DataUtils.setCustomYml("worlds", "worlds." + args[1].toLowerCase(Locale.ROOT) + ".name", args[1].toLowerCase(Locale.ROOT));
-                DataUtils.setCustomYml("worlds", "worlds." + args[1].toLowerCase(Locale.ROOT) + ".key", Bukkit.getWorld(args[1]).getKey().toString());
-                DataUtils.setCustomYml("worlds", "worlds." + args[1].toLowerCase(Locale.ROOT) + ".loadedBy", sender.getName());
-                DataUtils.setCustomYml("worlds", "worlds." + args[1].toLowerCase(Locale.ROOT) + ".loadedOriginal", Utils.getUnix());
-                DataUtils.setCustomYml("worlds", "worlds." + args[1].toLowerCase(Locale.ROOT) + ".type", type.getName().toUpperCase(Locale.ROOT));
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".name", args[1].toLowerCase(Locale.ROOT));
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".key", Bukkit.getWorld(args[1]).getKey().toString());
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".loaded", true);
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".loadedBy", sender.getName());
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".loadedOriginal", Utils.getUnix());
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".type", type.getName().toUpperCase(Locale.ROOT));
+                setIfNull("worlds." + args[1].toLowerCase(Locale.ROOT) + ".spawnLocation", Bukkit.getWorld(args[1]).getSpawnLocation());
 
                 if(sender instanceof Player) {
                     Player player = (Player) sender;
 
-                    player.teleport(Bukkit.getWorld(args[1]).getSpawnLocation());
+                    player.teleport(SetSpawn.getWorldSpawn(args[1]));
                 }
             }else if(Bukkit.getWorld(args[1]) == null) {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "Failed to create the world");
@@ -93,6 +95,12 @@ public class Load extends SubCommand {
             return CommandManager.createReturnList(types, args[2]);
         }
         return CommandManager.emptyList;
+    }
+
+    private void setIfNull(String path, Object toWhat) {
+        if(DataUtils.getCustomYmlObject("worlds", path) == null) {
+            DataUtils.setCustomYml("worlds", path, toWhat);
+        }
     }
 
     public static ArrayList<String> allWorldsPlusUnloaded(boolean onlyUnloaded) {
@@ -118,8 +126,6 @@ public class Load extends SubCommand {
 
     public static void loadWorld(String worldName) {
         if(Bukkit.getWorld(worldName) != null) {
-            DataUtils.setCustomYml("worlds", "worlds." + worldName, null);
-            Main.logError("An error occurred whilst trying to load the world " + worldName + " [...] world doesn't exist! (removing from \"worlds.yml\"...)");
             return;
         }
 

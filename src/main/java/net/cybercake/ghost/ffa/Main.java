@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -129,10 +130,23 @@ public final class Main extends JavaPlugin {
         registerRunnable(new RefreshMenu(), 20L);
         registerRunnable(new ResetInvClickCooldown(), 5L);
 
+        for(World world : Bukkit.getWorlds()) {
+            if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world.getName() + ".loaded")) {
+                if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds." + world.getName()) == null) {
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".name", world.getName());
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".key", Bukkit.getWorld(world.getName()).getKey().toString());
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loaded", true);
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loadedBy", "ServerDefault");
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loadedOriginal", Utils.getUnix());
+                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".spawnLocation", world.getSpawnLocation());
+                }
+            }
+        }
         if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds") != null) {
             for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
-                logInfo("Attempting to load the world " + world + "... please wait!");
-                Load.loadWorld(world);
+                if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded")) {
+                    Load.loadWorld(world);
+                }
             }
         }
 

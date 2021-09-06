@@ -30,7 +30,7 @@ public class SetSpawn extends SubCommand {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid arguments"); return;
             }
             Player player = (Player) sender;
-            player.getWorld().setSpawnLocation(player.getLocation());
+            DataUtils.setCustomYml("worlds", "worlds." + player.getWorld().getName() + ".spawnLocation", player.getLocation());
             Utils.commandStatus(sender, Utils.Status.INFO, "Set this world's spawn to your location");
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 2F);
         }else if(args.length > 1){
@@ -55,7 +55,7 @@ public class SetSpawn extends SubCommand {
 
                 Location location = new Location(world, Double.parseDouble(args[1]), Double.parseDouble(args[2]), Double.parseDouble(args[3]), Float.parseFloat(args[4]), Float.parseFloat(args[5]));
 
-                world.setSpawnLocation(location);
+                DataUtils.setCustomYml("worlds", "worlds." + location.getWorld().getName() + ".spawnLocation", location);
                 Utils.commandStatus(sender, Utils.Status.INFO, "&fSet this world's spawn location to: &3x=" + args[1] + " &ey=" + args[2] + " &az=" + args[3] + " &dyaw=" + args[4] + " &6pitch=" + args[5] + " &3world=" + world.getName());
 
                 if(sender instanceof Player) {
@@ -92,5 +92,17 @@ public class SetSpawn extends SubCommand {
             return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.createReturnList(Collections.singletonList("setLocation"), args[0]);
         }
         return CommandManager.emptyList;
+    }
+
+    public static Location getWorldSpawn(World world) {
+        if(DataUtils.getCustomYmlLocation("worlds", "worlds." + world.getName() + ".spawnLocation") == null) {
+            DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".spawnLocation", world.getSpawnLocation());
+            return world.getSpawnLocation();
+        }
+        return DataUtils.getCustomYmlLocation("worlds", "worlds." + world.getName() + ".spawnLocation");
+    }
+
+    public static Location getWorldSpawn(String worldName) {
+        return getWorldSpawn(Bukkit.getWorld(worldName));
     }
 }
