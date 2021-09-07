@@ -33,7 +33,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     public String getIdentifier() {return "ghostffa"; }
 
     @Override
-    public String getVersion() { return "1.0.0"; }
+    public String getVersion() { return Main.getVersionString(); }
 
     @Override
     public boolean persist() { return true; }
