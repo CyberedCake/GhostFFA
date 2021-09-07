@@ -350,7 +350,7 @@ public class Utils {
     }
 
     /**
-     * Using stack overflow from https://stackoverflow.com/questions/1555262/calculating-the-difference-between-two-java-date-instances
+     * Using Utils#getDateDifference() from https://stackoverflow.com/a/10650881
      */
     public static Map<TimeUnit,Long> getDateDifference(Date date1, Date date2) {
 
