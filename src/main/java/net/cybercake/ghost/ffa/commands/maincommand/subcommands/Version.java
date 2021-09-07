@@ -61,7 +61,7 @@ public class Version extends SubCommand {
                return;
           }
 
-          sender.sendMessage(Utils.chat("&fThis server is running GhostFFA version " + yourVersion + ", protocol " + yourProtocol + " (MC Version: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
+          sender.sendMessage(Utils.chat("&fThis server is running " + Main.getVersionString() + " (MC Version: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
 
           if(errorObtaining != null) {
                sender.sendMessage(Utils.chat("&cLatest version could not be obtained"));
