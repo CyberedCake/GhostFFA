@@ -113,5 +113,7 @@ buildNumber.properties
 run/
 
 # Remove target folder
-*/target/*
-*/target/**
+.classpath
+.project
+.settings/
+target/
