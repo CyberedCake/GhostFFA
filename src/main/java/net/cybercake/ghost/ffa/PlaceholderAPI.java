@@ -79,7 +79,9 @@ public class PlaceholderAPI extends PlaceholderExpansion {
         try {
             getPAPI().save(configFile);
         } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Could not save PlaceholderAPI to " + configFile, ex);
+            Main.logError("Failed to save PlaceholderAPI to placeholderapi.yml");
+            Main.logError(" ")
+            Utils.printBetterStackTrace(ex);
         }
     }
 
