@@ -244,6 +244,28 @@ public final class Main extends JavaPlugin {
         catch (IOException e) { }
         return null;
     }
+    public static String getVersionString() {
+          int yourProtocol = -1;
+          String yourVersion = Main.getPlugin(Main.class).getDescription().getVersion();
+          String apiVersion = "unknown";
+
+          try {
+               BufferedReader reader = new BufferedReader(new InputStreamReader(Main.getPlugin().getResource("plugin.yml")));
+               String line;
+               while((line = reader.readLine()) != null) {
+                    if(line.contains("version-protocol")) {
+                         yourProtocol = Integer.parseInt(line.replace("version-protocol: ", ""));
+                    }else if(line.contains("api-version")) {
+                         apiVersion = line.replace("api-version: ", "");
+                    }
+               }
+          } catch (Exception exception) {
+               Utils.error(sender, "whilst trying to read the current version", exception);
+               errorObtaining = exception;
+               return null;
+          }
+          return "GhostFFA version " + yourVersion + ", protocol " + yourProtocol;
+    }
 
     private static void registerCommandAndTab(String name, Object commandExecutor, boolean withCommodore) {
         try {
