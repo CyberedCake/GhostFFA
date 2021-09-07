@@ -70,15 +70,11 @@ public class KitsMain implements Listener {
             player.closeInventory();
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("requires_patron")) {
-            player.sendMessage(Utils.chat("&cYou must have &a&lPATRON &crank to use this kit slot!"));
-            player.sendMessage(store());
+            Utils.commandStatus(player, Utils.Status.FAILED, "You don't have access to that kit, you need &a&lPATRON &crank");
             player.closeInventory();
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("requires_vip")) {
-            player.sendMessage(Utils.chat("&cYou must have &6&lVIP &crank to use this kit slot!"));
-            player.sendMessage(store());
+            Utils.commandStatus(player, Utils.Status.FAILED, "You don't have access to that kit, you need ");
             player.closeInventory();
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 0.1F);
         }else if(kitStatus.get(slot).equals("accessible")) {
             if(clickType.equals(ClickType.RIGHT) || clickType.equals(ClickType.SHIFT_RIGHT)) {
                 KitViewer.openMenu(player, item.getAmount());
@@ -117,17 +113,6 @@ public class KitsMain implements Listener {
             Utils.error(player, "whilst trying to apply that kit for " + kitNumber + " for {name}", exception);
             return;
         }
-    }
-
-    public TextComponent store() {
-        TextComponent clickHereStore = new TextComponent(Utils.chat("&b&lCLICK HERE"));
-        clickHereStore.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://ghostffa.tebex.io/"));
-        clickHereStore.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Utils.chat("&fClick here to visit the &bstore&f!")).create()));
-        TextComponent main = new TextComponent(Utils.chat(" &cto visit the GhostFFA store!"));
-        main.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, ""));
-        main.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("").create()));
-        clickHereStore.addExtra(main);
-        return clickHereStore;
     }
 
     public static ItemStack setKitSlot(Player player, int slot, int kit, KitType kitType) {

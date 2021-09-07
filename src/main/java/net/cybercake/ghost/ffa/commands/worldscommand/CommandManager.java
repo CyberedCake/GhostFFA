@@ -5,6 +5,7 @@ import net.cybercake.ghost.ffa.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -156,6 +157,17 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             players.add(player.getName());
         }
         return players;
+    }
+
+    public static ArrayList<String> getWorldNames(String argument) {
+        ArrayList<String> allWorlds = new ArrayList<>();
+        for(World world : Bukkit.getWorlds()) {
+            allWorlds.add(world.getName());
+        }
+        if(allWorlds.contains(argument)) {
+            return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.emptyList;
+        }
+        return allWorlds;
     }
 
     @Override

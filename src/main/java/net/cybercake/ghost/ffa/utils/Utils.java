@@ -425,59 +425,22 @@ public class Utils {
         return sm.toString();
     }
 
-    public static String getFormattedSeconds(long timeInSeconds, ReturnType returnType, boolean showExtraZeros) {
-        long secondsLeft = timeInSeconds % 3600 % 60;
-        long minutes = (long) Math.floor(timeInSeconds % 3600 / 60);
-        long hours = (long) Math.floor(timeInSeconds / 3600);
-
-        String HH = ((hours       < 10) ? "0" : "") + hours;
-        String MM = ((minutes     < 10) ? "0" : "") + minutes;
-        String SS = ((secondsLeft < 10) ? "0" : "") + secondsLeft;
-        switch (returnType) {
-            case WITH_COLON:
-                if(showExtraZeros) {
-                    return HH + ":" + MM + ":" + SS;
-                } else {
-                    if(HH.equals("00")) {
-                        if(MM.equals("00")) {
-                            if (SS.equals("00")) {
-                                return null;
-                            } else {
-                                return SS;
-                            }
-                        } else {
-                            return MM + ":" + SS;
-                        }
-                    } else {
-                        return HH + ":" + MM + ":" + SS;
-                    }
-                }
-            case WITH_LETTERS_SPACED:
-                if(showExtraZeros) {
-                    return HH + "h, " + MM + "m, " + SS + "s";
-                } else {
-                    if(HH.equals("00")) {
-                        if(MM.equals("00")) {
-                            if(SS.equals("00")) {
-                                return null;
-                            } else {
-                                return SS + "s";
-                            }
-                        } else {
-                            return MM + "m, " + SS + "s";
-                        }
-                    } else {
-                        return HH + "h, " + MM + "m, " + SS + "s";
-                    }
-                }
-            case WITH_LETTERS_NO_SPACE:
-                if(!showExtraZeros) {
-                    return null;
-                } else {
-                    return HH + "h," + MM + "m," + SS + "s";
-                }
+    public static ArrayList<String> removeDuplicates(ArrayList<String> list) {
+        ArrayList<String> alreadyOver = new ArrayList<>();
+        for(String str : list) {
+            if(!alreadyOver.contains(str)) {
+                alreadyOver.add(str);
+            }
         }
-        return null;
+        return alreadyOver;
+    }
+
+    public static ArrayList<String> getDuplicates(ArrayList<String> list) {
+        ArrayList<String> alreadyOver = new ArrayList<>();
+        for(String str : list) {
+            alreadyOver.add(str);
+        }
+        return alreadyOver;
     }
 
     public static String getSeperator(ChatColor color) {

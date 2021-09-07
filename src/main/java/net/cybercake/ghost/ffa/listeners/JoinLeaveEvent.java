@@ -16,6 +16,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class JoinLeaveEvent implements Listener {
 
@@ -30,11 +32,11 @@ public class JoinLeaveEvent implements Listener {
             for(int i=1; i<8; i++) {
                 PlayerDataUtils.setPlayerData(player, "kits." + i + ".lastSetTime", 0);
             }
+            ArrayList<String> names = new ArrayList<>();
+            names.addAll(DataUtils.getCustomYmlStringList("playerdata/-allnames", "names"));
+            names.add(player.getName());
+            DataUtils.setCustomYml("playerdata/-allnames", "names", names);
         }
-        ArrayList<String> names = new ArrayList<>();
-        names.addAll(DataUtils.getCustomYmlStringList("playerdata/-allnames", "names"));
-        names.add(player.getName());
-        DataUtils.setCustomYml("playerdata/-allnames", "names", names);
         PlayerDataUtils.setPlayerData(player, "joinLeave.joinDate", Utils.getUnix());
         PlayerDataUtils.setPlayerData(player, "generic.username", player.getName());
         ChatEvent.lastChat.put(player.getName(), System.currentTimeMillis());

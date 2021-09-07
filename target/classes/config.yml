@@ -7,7 +7,7 @@
 
 blockedCommands:
   bypassPermission: ghostffa.bypass.blockedcommands
-  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn']
+  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn', 'seen']
 builtInClearLag:
   interval: 600 # in seconds
   showConsoleMessages: true

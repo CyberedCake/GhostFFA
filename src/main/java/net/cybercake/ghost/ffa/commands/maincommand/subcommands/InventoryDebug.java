@@ -17,7 +17,7 @@ import java.util.List;
 public class InventoryDebug extends SubCommand {
 
     public InventoryDebug() {
-        super("inventorydebug", "ghostffa.subcommand.inventorydebug", "Provides the developer with useful inventory & GUI knowledge", "/ghostffa inventorydebug", new String[]{""});
+        super("inventorydebug", "ghostffa.subcommand.inventorydebug", "Provides the developer with useful inventory & GUI knowledge", "/ghostffa inventorydebug [player]", new String[]{""});
     }
 
     @Override

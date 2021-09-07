@@ -1,5 +1,5 @@
 broadcast {
-  audienceType brigadier:string single_word {
-    context brigadier:string greedy_phrase;
+  audienceType|player brigadier:string single_word {
+    message brigadier:string greedy_phrase;
   }
 }

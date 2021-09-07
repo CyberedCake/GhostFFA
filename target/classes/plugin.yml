@@ -1,6 +1,6 @@
 name: GhostFFA
-version: 1.9.3
-version-protocol: 12
+version: 1.9.4
+version-protocol: 13
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
@@ -41,6 +41,7 @@ commands:
     usage: An error occurred whilst executing this command!
   rename:
     description: No description
+    permission: ghostffa.command.rename
     usage: An error occurred whilst executing this command!
   seen:
     description: No description
@@ -50,39 +51,48 @@ commands:
   gmc:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.gamemode.creative
     aliases: [gm1]
   gma:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.gamemode.adventure
     aliases: [gm2]
   gmsp:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.gamemode.spectator
     aliases: [gm3]
   gms:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.gamemode.survival
     aliases: [gm0]
 
   gamemode:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.gamemode
     aliases: [gm]
   clear:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.clear
     aliases: [invreset, ci]
   give:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.give
     aliases: [item, i]
   fly:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.fly
     aliases: [flight]
   broadcast:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.broadcast
     aliases: [bc, alert, msgto, messageto]
   invsee:
     description: No description
@@ -90,4 +100,5 @@ commands:
   steleport:
     description: No description
     usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.staffteleport
     aliases: [stp]

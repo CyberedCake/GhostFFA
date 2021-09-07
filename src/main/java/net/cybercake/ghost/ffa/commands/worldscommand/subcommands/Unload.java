@@ -50,11 +50,7 @@ public class Unload extends SubCommand {
     @Override
     public List<String> tab(CommandSender sender, String[] args) {
         if(args.length == 2) {
-            ArrayList<String> worlds = new ArrayList<>();
-            for(World world : Bukkit.getWorlds()) {
-                worlds.add(world.getName());
-            }
-            return worlds;
+            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[1]), args[1]);
         }
         return CommandManager.emptyList;
     }

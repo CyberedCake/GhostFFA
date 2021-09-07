@@ -97,7 +97,7 @@ public class Load extends SubCommand {
         return CommandManager.emptyList;
     }
 
-    private void setIfNull(String path, Object toWhat) {
+    public static void setIfNull(String path, Object toWhat) {
         if(DataUtils.getCustomYmlObject("worlds", path) == null) {
             DataUtils.setCustomYml("worlds", path, toWhat);
         }

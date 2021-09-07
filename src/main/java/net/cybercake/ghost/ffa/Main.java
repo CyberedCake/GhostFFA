@@ -27,6 +27,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -38,9 +39,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -130,25 +133,30 @@ public final class Main extends JavaPlugin {
         registerRunnable(new RefreshMenu(), 20L);
         registerRunnable(new ResetInvClickCooldown(), 5L);
 
-        for(World world : Bukkit.getWorlds()) {
-            if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world.getName() + ".loaded")) {
-                if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds." + world.getName()) == null) {
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".name", world.getName());
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".key", Bukkit.getWorld(world.getName()).getKey().toString());
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loaded", true);
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loadedBy", "ServerDefault");
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".loadedOriginal", Utils.getUnix());
-                    DataUtils.setCustomYml("worlds", "worlds." + world.getName() + ".spawnLocation", world.getSpawnLocation());
-                }
+        for(String world : Load.allWorldsPlusUnloaded(true)) {
+            if(DataUtils.getCustomYmlString("worlds", "worlds." + world + ".name") == null || !(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded"))) {
+                WorldCreator loadWorld = new WorldCreator(world);
+                loadWorld.createWorld();
+
+                Load.setIfNull("worlds." + world + ".name", world);
+                Load.setIfNull("worlds." + world + ".key", Bukkit.getWorld(world).getKey().toString());
+                Load.setIfNull("worlds." + world + ".loaded", true);
+                Load.setIfNull("worlds." + world + ".loadedBy", "ServerDefault");
+                Load.setIfNull("worlds." + world + ".loadedOriginal", Utils.getUnix());
+                Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
+                    if(DataUtils.getCustomYmlLocation("worlds", "worlds." + world + ".spawnLocation").getWorld() != null) {
+                        Load.setIfNull("worlds." + world + ".spawnLocation", Bukkit.getWorld(world).getSpawnLocation());
+                    }
+                }, 100L);
             }
         }
-        if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds") != null) {
-            for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
-                if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded")) {
-                    Load.loadWorld(world);
-                }
-            }
-        }
+       //if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds") != null) {
+       //    for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
+       //        if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded")) {
+       //            Load.loadWorld(world);
+       //        }
+       //    }
+       //}
 
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
@@ -228,12 +236,12 @@ public final class Main extends JavaPlugin {
     }
 
     public static Main getPlugin() { return plugin; }
-    public static FileConfiguration getMainConfig() { return plugin.getConfig(); }
-    public static String getPluginPrefix() { return "[" + getPlugin(Main.class).getDescription().getPrefix() + "]"; }
+    public static @NotNull FileConfiguration getMainConfig() { return plugin.getConfig(); }
+    public static @NotNull String getPluginPrefix() { return "[" + getPlugin(Main.class).getDescription().getPrefix() + "]"; }
     public static void logInfo(String msg) { Bukkit.getLogger().info(getPluginPrefix() + " " + msg); }
     public static void logWarn(String msg) { Bukkit.getLogger().warning(getPluginPrefix() + " " + msg); }
     public static void logError(String msg) { Bukkit.getLogger().severe(msg); }
-    public static World getMainWorld() {
+    public static @Nullable World getMainWorld() {
         Properties pr = new Properties();
         try {
             FileInputStream in = new FileInputStream("server.properties");
@@ -244,7 +252,7 @@ public final class Main extends JavaPlugin {
         catch (IOException e) { }
         return null;
     }
-    public static String getVersionString() {
+    public static @Nullable String getVersionString() {
           int yourProtocol = -1;
           String yourVersion = Main.getPlugin(Main.class).getDescription().getVersion();
           String apiVersion = "unknown";

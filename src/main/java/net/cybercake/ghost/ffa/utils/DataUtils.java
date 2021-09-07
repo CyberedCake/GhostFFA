@@ -65,7 +65,7 @@ public class DataUtils {
 
             return customConfig.get(path);
         } catch (Exception e) {
-            e.printStackTrace();
+            Utils.printBetterStackTrace(e);
             return null;
         }
     }

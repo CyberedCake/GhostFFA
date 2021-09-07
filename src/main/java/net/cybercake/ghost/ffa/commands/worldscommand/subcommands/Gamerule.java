@@ -85,11 +85,13 @@ public class Gamerule extends SubCommand {
                 return CommandManager.createReturnList(Arrays.asList("true", "false"), args[2]);
             }
         }else if(args.length == 4) {
-            ArrayList<String> worlds = new ArrayList<>();
-            for(World world : Bukkit.getWorlds()) {
-                worlds.add(world.getName());
+            if(stringToGamerule(args[1]).getType() == Boolean.class && !(args[2].equals("true") || args[2].equals("false"))) {
+                return CommandManager.emptyList;
             }
-            return worlds;
+            if(stringToGamerule(args[1]).getType() == Integer.class && !(Utils.isInteger(args[2]))) {
+                return CommandManager.emptyList;
+            }
+            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[3]), args[3]);
         }
         return CommandManager.emptyList;
     }

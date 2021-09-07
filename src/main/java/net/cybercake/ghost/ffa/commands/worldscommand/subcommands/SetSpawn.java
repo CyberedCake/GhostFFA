@@ -70,14 +70,7 @@ public class SetSpawn extends SubCommand {
     public List<String> tab(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         if(args.length == 7) {
-            ArrayList<String> allWorlds = new ArrayList<>();
-            for(World world : Bukkit.getWorlds()) {
-                allWorlds.add(world.getName());
-            }
-            if(allWorlds.contains(args[6])) {
-                return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.emptyList;
-            }
-            return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.createReturnList(allWorlds, args[6]);
+            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[6]), args[6]);
         }else if(args.length == 6) {
             return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.createReturnList(Collections.singletonList("" + Math.round(player.getLocation().getPitch())), args[5]);
         }else if(args.length == 5) {
