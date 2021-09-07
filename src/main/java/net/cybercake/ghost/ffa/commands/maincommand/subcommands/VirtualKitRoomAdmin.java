@@ -203,7 +203,7 @@ public class VirtualKitRoomAdmin extends SubCommand implements Listener {
     }
 
     public static void saveKitRoomConfiguration(Player player, int categoryNumber, boolean showText) {
-        Inventory inventory = Bukkit.createInventory(player, 9*6, Component.text("Virtual Kit Room (" + categoryNumber + "/6)"));
+        Inventory inventory = Bukkit.createInventory(null, 9*6, Component.text("Virtual Kit Room (" + categoryNumber + "/6)"));
 
         for(int i=0; i<45; i++) {
             DataUtils.setCustomYml("data", "kits.virtualKitRoom.categories.cat" + categoryNumber + ".slot" + i, player.getOpenInventory().getItem(i));
