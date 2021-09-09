@@ -33,7 +33,17 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     public String getIdentifier() {return "ghostffa"; }
 
     @Override
-    public String getVersion() { return Main.getVersionString(); }
+    public String getVersion() {
+        try {
+            return Main.getVersionString()
+                    .replace("GhostFFA ", "")
+                    .replace("version ", "v")
+                    .replace(", protocol ", ", p");
+        } catch (Exception exception) {
+            Main.logError("Failed to get the version string for current version: " + exception);
+            return "net.cybercake.ghost.ffa.PlaceholderAPI#FailedToGetVersionString:" + exception;
+        }
+    }
 
     @Override
     public boolean persist() { return true; }
@@ -80,7 +90,7 @@ public class PlaceholderAPI extends PlaceholderExpansion {
             getPAPI().save(configFile);
         } catch (IOException ex) {
             Main.logError("Failed to save PlaceholderAPI to placeholderapi.yml");
-            Main.logError(" ")
+            Main.logError(" ");
             Utils.printBetterStackTrace(ex);
         }
     }

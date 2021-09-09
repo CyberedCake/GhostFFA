@@ -125,19 +125,24 @@ public class Load extends SubCommand {
     }
 
     public static void loadWorld(String worldName) {
+        // Make sure the world does not exist and is unloaded
         if(Bukkit.getWorld(worldName) != null) {
             return;
         }
 
         try {
+            // Create a new world
             WorldCreator worldCreator = new WorldCreator(worldName.toLowerCase(Locale.ROOT));
             worldCreator.createWorld();
+
+            // If successful, should pop out in console it has been
             if(Bukkit.getWorlds().contains(Bukkit.getWorld(worldName))) {
                 Main.logInfo("Successfully loaded new world " + worldName);
             } else{
                 Main.logError("An error occurred whilst trying to load the world " + worldName + " [...] failed to find!");
             }
         } catch (Exception exception) {
+            // If unsuccessful, show internal error
             Main.logError("An error occurred whilst trying to load the world " + worldName);
             Main.logError(" ");
             Utils.printBetterStackTrace(exception);

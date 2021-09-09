@@ -1,4 +1,4 @@
-package net.cybercake.ghost.ffa.commands;
+package net.cybercake.ghost.ffa.commands.defaultcommands;
 
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;

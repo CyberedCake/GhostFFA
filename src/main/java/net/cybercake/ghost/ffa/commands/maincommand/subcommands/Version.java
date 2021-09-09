@@ -42,10 +42,11 @@ public class Version extends SubCommand {
           String latestVersion = Version.latestVersion;
 
           int yourProtocol = -1;
-          String yourVersion = Main.getPlugin(Main.class).getDescription().getVersion();
           String apiVersion = "unknown";
+          String versionString = "";
 
           try {
+               versionString = Main.getVersionString();
                BufferedReader reader = new BufferedReader(new InputStreamReader(Main.getPlugin().getResource("plugin.yml")));
                String line;
                while((line = reader.readLine()) != null) {
@@ -61,7 +62,7 @@ public class Version extends SubCommand {
                return;
           }
 
-          sender.sendMessage(Utils.chat("&fThis server is running " + Main.getVersionString() + " (MC Version: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
+          sender.sendMessage(Utils.chat("&fThis server is running " + versionString+ " (MC Version: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
 
           if(errorObtaining != null) {
                sender.sendMessage(Utils.chat("&cLatest version could not be obtained"));
@@ -77,6 +78,7 @@ public class Version extends SubCommand {
                sender.sendMessage(Utils.chat("&7&oLatest plugin version: GhostFFA version " + latestVersion + ", protocol " + latestProtocol));
           }else{
                sender.sendMessage(Utils.chat("&cError obtaining version difference information"));
+               sender.sendMessage(Utils.chat("&7&oLatest plugin version: GhostFFA version " + latestVersion + ", protocol " + latestProtocol));
           }
      }
 

@@ -7,10 +7,10 @@
 
 blockedCommands:
   bypassPermission: ghostffa.bypass.blockedcommands
-  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn', 'seen']
+  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn', 'seen', 'help', 'combat']
 builtInClearLag:
   interval: 600 # in seconds
-  showConsoleMessages: true
+  showConsoleMessages: true # show console messages when clearlag executes
 join: # PlaceholderAPI works here
   - '{seperator}'
   - '&fWelcome to &b&lGhostFFA'
@@ -18,10 +18,10 @@ join: # PlaceholderAPI works here
   - '&7&oYou have been away for {time}, welcome back :)'
   - '{seperator}'
 invClickCooldown: 5 # in ticks
-timeZone: 'GMT-4'
+timeZone: 'GMT-4' # the timezone server is in (ignores Minehut's)
 disabledKickMessages: # if a kick message contains this, it will not kick them for it
   - 'Kicked for spamming'
   - 'Illegal characters in chat'
 chatCooldown: 1000 # in miliseconds
-blockCleanup:
+blockCleanup: # defined by "<world>: ['<blocks>']"
   ffa1: ['ANCHORS', 'GLOW_STONE', 'ENDER_CRYSTALS', 'OBSIDIAN', 'CRAFTING_TABLES', 'ICE', 'COBWEBS', 'ENDER_CHEST', 'ANVIL']

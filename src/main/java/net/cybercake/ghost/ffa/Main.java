@@ -1,12 +1,12 @@
 package net.cybercake.ghost.ffa;
 
 import me.lucko.commodore.CommodoreProvider;
-import net.cybercake.ghost.ffa.commands.*;
 import net.cybercake.ghost.ffa.commands.admincommands.*;
 import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMA;
 import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMC;
 import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMS;
 import net.cybercake.ghost.ffa.commands.admincommands.gamemodes.GMSP;
+import net.cybercake.ghost.ffa.commands.defaultcommands.*;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
@@ -19,15 +19,11 @@ import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.cybercake.ghost.ffa.repeatingtasks.ClearLagTask;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.RefreshMenu;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.ResetInvClickCooldown;
-import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -42,8 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -58,6 +52,7 @@ public final class Main extends JavaPlugin {
         long mss = System.currentTimeMillis();
         plugin = this;
 
+        // ------------------ SAVE RESOURCES & RELOAD ------------------
         new PlaceholderAPI(this).register();
 
         saveResource("config.yml", true);
@@ -66,6 +61,7 @@ public final class Main extends JavaPlugin {
         saveResource("placeholderapi.yml", true);
         PlaceholderAPI.reloadPAPI();
 
+        // ------------------ MESSAGE WHEN RELOADING ------------------
         if(Bukkit.getOnlinePlayers().size() > 0) {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 player.closeInventory();
@@ -78,31 +74,58 @@ public final class Main extends JavaPlugin {
             unixStarted = Utils.getUnix();
         }
 
-        boolean loadCommodore = true;
-        registerCommandAndTab("ghostffa", new CommandManager(), loadCommodore);
-        registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.worldscommand.CommandManager(), loadCommodore);
-        registerCommandAndTab("guislots", new ItemUtils(), loadCommodore);
-        registerCommandAndTab("ping", new Ping(), loadCommodore);
-        registerCommandAndTab("discord", new Discord(), loadCommodore);
-        registerCommandAndTab("kits", new Kits(), loadCommodore);
-        registerCommandAndTab("clearlag", new ClearLagCMD(), loadCommodore);
-        registerCommandAndTab("spawn", new Spawn(), loadCommodore);
-        registerCommandAndTab("rename", new Rename(), loadCommodore);
-        registerCommandAndTab("seen", new Seen(), loadCommodore);
-        // Gamemode commands
-        registerCommandAndTab("gmc", new GMC(), loadCommodore);
-        registerCommandAndTab("gms", new GMS(), loadCommodore);
-        registerCommandAndTab("gmsp", new GMSP(), loadCommodore);
-        registerCommandAndTab("gma", new GMA(), loadCommodore);
-        // Admin commands
-        registerCommandAndTab("gamemode", new Gamemode(), loadCommodore);
-        registerCommandAndTab("clear", new Clear(), loadCommodore);
-        registerCommandAndTab("give", new Give(), loadCommodore);
-        registerCommandAndTab("fly", new Fly(), loadCommodore);
-        registerCommandAndTab("broadcast", new Broadcast(), loadCommodore);
-        registerCommandAndTab("invsee", new InvSee(), loadCommodore);
-        registerCommandAndTab("steleport", new STeleport(), loadCommodore);
+        // ------------------ LOAD COMMANDS, TAB COMPLETERS, LISTENERS, AND RUNNABLES ------------------
+        boolean productionReady = true;
+                      // General commands
+        registerCommandAndTab("ghostffa", new CommandManager(), productionReady);
+        registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.worldscommand.CommandManager(), productionReady);
+        registerCommandAndTab("guislots", new ItemUtils(), productionReady);
+        registerCommandAndTab("ping", new Ping(), productionReady);
+        registerCommandAndTab("discord", new Discord(), productionReady);
+        registerCommandAndTab("kits", new Kits(), productionReady);
+        registerCommandAndTab("clearlag", new ClearLagCMD(), productionReady);
+        registerCommandAndTab("spawn", new Spawn(), productionReady);
+        registerCommandAndTab("rename", new Rename(), productionReady);
+        registerCommandAndTab("seen", new Seen(), productionReady);
+                      // Gamemode commands
+        registerCommandAndTab("gmc", new GMC(), productionReady);
+        registerCommandAndTab("gms", new GMS(), productionReady);
+        registerCommandAndTab("gmsp", new GMSP(), productionReady);
+        registerCommandAndTab("gma", new GMA(), productionReady);
+                      // Admin commands
+        registerCommandAndTab("gamemode", new Gamemode(), productionReady);
+        registerCommandAndTab("clear", new Clear(), productionReady);
+        registerCommandAndTab("give", new Give(), productionReady);
+        registerCommandAndTab("fly", new Fly(), productionReady);
+        registerCommandAndTab("broadcast", new Broadcast(), productionReady);
+        registerCommandAndTab("invsee", new InvSee(), productionReady);
+        registerCommandAndTab("steleport", new STeleport(), productionReady);
+        registerCommandAndTab("help", new Help(), productionReady);
 
+
+                      // General
+        registerListener(new ChatEvent());
+        registerListener(new JoinLeaveEvent());
+        registerListener(new KickEvent());
+                      // Commands
+        registerListener(new CommandListeners());
+        registerListener(new CommandSendEvent());
+        registerListener(new CommandPreProcessEvent());
+                      // GUIs & inventory click events
+        registerListener(new ItemUtils());
+        registerListener(new KitsMain());
+        registerListener(new KitViewer());
+        registerListener(new VirtualKitRoom());
+        registerListener(new VirtualKitRoomAdmin());
+        registerListener(new KitPreviewer());
+
+
+                      // Runnables
+        registerRunnable(new ClearLagTask(), 20L);
+        registerRunnable(new RefreshMenu(), 20L);
+        registerRunnable(new ResetInvClickCooldown(), 5L);
+
+        // ------------------ LOAD COMMODORE & WORLDS & OTHERS ------------------
         if(CommodoreProvider.isSupported()) {
             try {
                 if(!(Bukkit.getPluginManager().getPlugin("PlugMan") == null) && Bukkit.getPluginManager().getPlugin("PlugMan").isEnabled()) {
@@ -113,51 +136,13 @@ public final class Main extends JavaPlugin {
             }
         }
 
-        // General
-        registerListener(new ChatEvent());
-        registerListener(new JoinLeaveEvent());
-        registerListener(new KickEvent());
-        // Commands
-        registerListener(new CommandListeners());
-        registerListener(new CommandSendEvent());
-        registerListener(new CommandPreProcessEvent());
-        // GUIs & inventory click events
-        registerListener(new ItemUtils());
-        registerListener(new KitsMain());
-        registerListener(new KitViewer());
-        registerListener(new VirtualKitRoom());
-        registerListener(new VirtualKitRoomAdmin());
-        registerListener(new KitPreviewer());
-
-        registerRunnable(new ClearLagTask(), 20L);
-        registerRunnable(new RefreshMenu(), 20L);
-        registerRunnable(new ResetInvClickCooldown(), 5L);
-
         for(String world : Load.allWorldsPlusUnloaded(true)) {
-            if(DataUtils.getCustomYmlString("worlds", "worlds." + world + ".name") == null || !(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded"))) {
-                WorldCreator loadWorld = new WorldCreator(world);
-                loadWorld.createWorld();
-
-                Load.setIfNull("worlds." + world + ".name", world);
-                Load.setIfNull("worlds." + world + ".key", Bukkit.getWorld(world).getKey().toString());
-                Load.setIfNull("worlds." + world + ".loaded", true);
-                Load.setIfNull("worlds." + world + ".loadedBy", "ServerDefault");
-                Load.setIfNull("worlds." + world + ".loadedOriginal", Utils.getUnix());
-                Bukkit.getScheduler().runTaskLaterAsynchronously(Main.getPlugin(), () -> {
-                    if(DataUtils.getCustomYmlLocation("worlds", "worlds." + world + ".spawnLocation").getWorld() != null) {
-                        Load.setIfNull("worlds." + world + ".spawnLocation", Bukkit.getWorld(world).getSpawnLocation());
-                    }
-                }, 100L);
-            }
+            logInfo("Attempting to load the world " + world + " ... please wait!");
+            Load.loadWorld(world);
         }
-       //if(DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds") != null) {
-       //    for(String world : DataUtils.getCustomYmlFileConfig("worlds").getConfigurationSection("worlds").getKeys(false)) {
-       //        if(DataUtils.getCustomYmlBoolean("worlds", "worlds." + world + ".loaded")) {
-       //            Load.loadWorld(world);
-       //        }
-       //    }
-       //}
 
+
+        // ------------------ MESSAGE WHEN COMPLETE ------------------
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.closeInventory();
             player.sendTitle(" ", Utils.chat("&aReload complete in &b" + Utils.formatLong(System.currentTimeMillis()-mss) + "&bms&a!"), 10, 80, 10);
@@ -171,6 +156,9 @@ public final class Main extends JavaPlugin {
 
         logInfo("Enabled GhostFFA [v" + getPlugin(Main.class).getDescription().getVersion() + "] in " + (System.currentTimeMillis()-mss) + "ms");
 
+
+        // ------------------ LOAD POST PLUGIN STARTUP ------------------
+        //              (usually Async or unimportant tasks)
         try {
             Bukkit.getScheduler().runTaskAsynchronously(this, () -> {
                 broadcastFormatted("Loading Virtual Kit Room... this may take a few seconds!", true);
@@ -182,7 +170,7 @@ public final class Main extends JavaPlugin {
             broadcastFormatted("&4[Server Error] &cFailed to load the Virtual Kit Room: " + exception, true);
         }
 
-        if(!loadCommodore) {
+        if(!productionReady) {
             Bukkit.getScheduler().runTaskLater(Main.getPlugin(), () -> {
                 broadcastFormatted("Please note that this is a developmental version of the plugin. Use extreme caution and make backups!", true);
             }, 80L);
@@ -252,10 +240,9 @@ public final class Main extends JavaPlugin {
         catch (IOException e) { }
         return null;
     }
-    public static @Nullable String getVersionString() {
+    public static @NotNull String getVersionString() throws Exception {
           int yourProtocol = -1;
           String yourVersion = Main.getPlugin(Main.class).getDescription().getVersion();
-          String apiVersion = "unknown";
 
           try {
                BufferedReader reader = new BufferedReader(new InputStreamReader(Main.getPlugin().getResource("plugin.yml")));
@@ -263,14 +250,10 @@ public final class Main extends JavaPlugin {
                while((line = reader.readLine()) != null) {
                     if(line.contains("version-protocol")) {
                          yourProtocol = Integer.parseInt(line.replace("version-protocol: ", ""));
-                    }else if(line.contains("api-version")) {
-                         apiVersion = line.replace("api-version: ", "");
                     }
                }
           } catch (Exception exception) {
-               Utils.error(sender, "whilst trying to read the current version", exception);
-               errorObtaining = exception;
-               return null;
+               throw new Exception(exception);
           }
           return "GhostFFA version " + yourVersion + ", protocol " + yourProtocol;
     }

@@ -36,6 +36,7 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
     public static HashMap<String, Menu> currentMenu = new HashMap<>();
     public static HashMap<String, Integer> invClickCooldown = new HashMap<>();
 
+    @Deprecated
     public static void setInvSlot(Inventory inventory, int slot, Material material, int amount, String name, List<String> lore) {
         try {
             ItemStack item = new ItemStack(material, amount);
@@ -124,6 +125,7 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
         return null;
     }
 
+    @Deprecated
     public static void setShinyInvSlot(Inventory inventory, int slot, Material material, int amount, String name, List<String> lore) {
         try {
             ItemStack item = new ItemStack(material, amount);
@@ -146,6 +148,7 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
         }
     }
 
+    @Deprecated
     public static void setInvSlotHead(Inventory inventory, int slot, String owner, int amount, String name, List<String> lore) {
         try {
             ItemStack item = new ItemStack(Material.PLAYER_HEAD, amount);
