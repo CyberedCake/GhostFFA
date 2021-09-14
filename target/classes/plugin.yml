@@ -1,13 +1,13 @@
 name: GhostFFA
-version: 1.9.5
-version-protocol: 14
+version: '1.10'
+version-protocol: 15
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
 description: The main plugin for the Minehut server GhostFFA.minehut.gg
 website: 'https://twitter.com/trueCyberCake'
 depend: [LuckPerms, PlaceholderAPI]
-api-version: 1.17
+api-version: 1.16
 
 commands:
   guislots:

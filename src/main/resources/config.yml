@@ -23,5 +23,11 @@ disabledKickMessages: # if a kick message contains this, it will not kick them f
   - 'Kicked for spamming'
   - 'Illegal characters in chat'
 chatCooldown: 1000 # in miliseconds
-blockCleanup: # defined by "<world>: ['<blocks>']"
-  ffa1: ['ANCHORS', 'GLOW_STONE', 'ENDER_CRYSTALS', 'OBSIDIAN', 'CRAFTING_TABLES', 'ICE', 'COBWEBS', 'ENDER_CHEST', 'ANVIL']
+blockCleanup: # cleans up blocks in certain worlds with intervals and items
+  # example:
+  # aWorldName:
+  #     blocks: ['OBSIDIAN', 'RESPAWN_ANCHOR']
+  #     interval: 600 (in seconds)
+  ffa1:
+    blocks: ['OBSIDIAN', 'RESPAWN_ANCHOR']
+    interval: 600

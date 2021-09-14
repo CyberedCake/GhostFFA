@@ -19,6 +19,7 @@ import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.cybercake.ghost.ffa.repeatingtasks.ClearLagTask;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.RefreshMenu;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.ResetInvClickCooldown;
+import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
@@ -139,6 +140,11 @@ public final class Main extends JavaPlugin {
         for(String world : Load.allWorldsPlusUnloaded(true)) {
             logInfo("Attempting to load the world " + world + " ... please wait!");
             Load.loadWorld(world);
+        }
+        for(World world : Bukkit.getWorlds()) {
+            if(!DataUtils.getCustomYmlBoolean("worlds", "worlds." + world.getName() + ".loaded")) {
+                Bukkit.unloadWorld(world, true);
+            }
         }
 
 
