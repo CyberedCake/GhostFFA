@@ -10,6 +10,10 @@ import java.io.File;
 
 public class PlayerDataUtils {
 
+    public static boolean checkLoaded() {
+        return true;
+    }
+
     public static void setPlayerData(Player player, String path, Object toWhat) {
         try {
             File customYml = new File(Main.getPlugin().getDataFolder() + "/playerdata/" + player.getUniqueId() + ".yml");

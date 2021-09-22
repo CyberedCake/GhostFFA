@@ -64,7 +64,7 @@ public class Give implements CommandExecutor, TabCompleter {
             }else{
                 giveItemToPlayer(sender, target, new ItemStack(ItemUtils.mcKeyToMaterial(args[0]), Integer.parseInt(args[1])));
             }
-        }else if(args.length == 4) {
+        }else if(args.length >= 4) {
             Player target = Bukkit.getPlayerExact(args[2]);
             if(target == null) {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "Invalid online player");
@@ -76,11 +76,9 @@ public class Give implements CommandExecutor, TabCompleter {
                 Utils.commandStatus(sender, Utils.Status.FAILED, "Integer must be between &b1 - 64");
             }else{
                 try {
-                    NBTContainer nbtContainer = new NBTContainer(args[3]);
                     ItemStack itemStack = new ItemStack(ItemUtils.mcKeyToMaterial(args[0]), Integer.parseInt(args[1]));
                     NBTItem nbtItem = new NBTItem(itemStack);
-                    NBTCompound compound = nbtContainer;
-                    nbtItem.mergeCompound(compound);
+                    nbtItem.mergeCompound(new NBTContainer(Utils.getStringFromArguments(3, args)));
 
                     itemStack = nbtItem.getItem();
 

@@ -157,6 +157,19 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return players;
     }
 
+    public static ArrayList<String> getIntegers(String integerArgument, int lowest, int highest) {
+        ArrayList<String> integers = new ArrayList<>();
+        if(!Utils.isInteger(integerArgument)) { return integers; }
+        if(!Utils.isBetweenEquals(Integer.parseInt(integerArgument), lowest, highest)) { return integers; }
+
+        for(int i=1; i<10; i++) {
+            if(!Utils.isBetweenEquals(Integer.parseInt(integerArgument + i), lowest, highest)) continue;
+
+            integers.add(integerArgument + i + "");
+        }
+        return integers;
+    }
+
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         if(getSubCommandsOnlyWithPerms(sender).size() <= 1) {
@@ -209,6 +222,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         for (String str : completions) {
             if (str.toLowerCase(Locale.ROOT).contains(currentArg)) {
+                returnedCompletions.add(str);
+            }
+        }
+
+        return returnedCompletions;
+    }
+
+    public static List<String> createReturnListSearch(List<String> completions, String currentArg) {
+        if (currentArg.length() <= 0) { return completions; }
+
+        currentArg = currentArg.toLowerCase(Locale.ROOT);
+        List<String> returnedCompletions = new ArrayList<>();
+
+        for (String str : completions) {
+            if (str.toLowerCase(Locale.ROOT).startsWith(currentArg)) {
                 returnedCompletions.add(str);
             }
         }

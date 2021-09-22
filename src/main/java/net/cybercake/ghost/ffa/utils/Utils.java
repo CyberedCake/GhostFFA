@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -186,6 +187,13 @@ public class Utils {
         return name;
     }
 
+    public static String getFormattedName(String p) {
+        if(Bukkit.getPlayerExact(p) == null) {
+            throw new NullPointerException("Player (" + p + ") is not currently on the server and therefore the server failed to retrieve the formatted name of them!");
+        }
+        return getFormattedName(Bukkit.getPlayerExact(p));
+    }
+
     public static String formatLong(long longNumber) {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setGroupingUsed(true);
@@ -333,6 +341,16 @@ public class Utils {
             }
         }
         return null;
+    }
+
+    public static void performCommand(CommandSender sender, String command) {
+        if(sender instanceof Player) {
+            Player player = (Player) sender;
+
+            player.performCommand(command);
+        }else{
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1));
+        }
     }
 
     public static boolean isBetweenEquals(int yourInteger, int integer1, int integer2) {

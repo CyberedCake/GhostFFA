@@ -3,13 +3,13 @@
     <output-path>$PROJECT_DIR$/../../MinecraftServers/GhostFFA Testing/plugins</output-path>
     <root id="archive" name="GhostFFA.jar">
       <element id="module-output" name="GhostFFA" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/nbt-data-api/2.8.0/nbt-data-api-2.8.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/lucko/commodore-file/1.0/commodore-file-1.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/javassist/javassist/3.28.0-GA/javassist-3.28.0-GA.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/nbt-injector/2.8.0/nbt-injector-2.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/lucko/commodore-file/1.0/commodore-file-1.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/functional-annotations/0.1-SNAPSHOT/functional-annotations-0.1-20210226.114524-6.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/mojang/brigadier/1.0.17/brigadier-1.0.17.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/nbt-injector/2.8.0/nbt-injector-2.8.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/item-nbt-api/2.8.0/item-nbt-api-2.8.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/de/tr7zw/nbt-data-api/2.8.0/nbt-data-api-2.8.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/me/lucko/commodore/1.10/commodore-1.10.jar" path-in-jar="/" />
     </root>
   </artifact>

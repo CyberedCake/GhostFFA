@@ -1,6 +1,6 @@
 name: GhostFFA
-version: '1.10'
-version-protocol: 15
+version: '1.10.1'
+version-protocol: 16
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
@@ -10,6 +10,7 @@ depend: [LuckPerms, PlaceholderAPI]
 api-version: 1.16
 
 commands:
+  # Generic commands
   guislots:
     description: An administrator command
     permission: ghostffa.command.guislots
@@ -50,7 +51,12 @@ commands:
     description: No description
     usage: An error occurred whilst executing this command!
     aliases: [info, pleasehelp]
+  combat:
+    description: No description
+    usage: An error occurred whilst executing this command!
 
+  # Admin commands
+  # (gamemode)
   gmc:
     description: No description
     usage: An error occurred whilst executing this command!
@@ -72,6 +78,7 @@ commands:
     permission: ghostffa.command.gamemode.survival
     aliases: [gm0]
 
+  # Admin commands
   gamemode:
     description: No description
     usage: An error occurred whilst executing this command!
@@ -105,3 +112,4 @@ commands:
     usage: An error occurred whilst executing this command!
     permission: ghostffa.command.staffteleport
     aliases: [stp]
+  loop:

@@ -17,10 +17,12 @@ import net.cybercake.ghost.ffa.menus.kits.KitViewer;
 import net.cybercake.ghost.ffa.menus.kits.KitsMain;
 import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
 import net.cybercake.ghost.ffa.repeatingtasks.ClearLagTask;
+import net.cybercake.ghost.ffa.repeatingtasks.CombatTimer;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.RefreshMenu;
 import net.cybercake.ghost.ffa.repeatingtasks.menus.ResetInvClickCooldown;
 import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
+import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
@@ -102,6 +104,7 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("invsee", new InvSee(), productionReady);
         registerCommandAndTab("steleport", new STeleport(), productionReady);
         registerCommandAndTab("help", new Help(), productionReady);
+        registerCommandAndTab("combat", new Combat(), productionReady);
 
 
                       // General
@@ -119,12 +122,14 @@ public final class Main extends JavaPlugin {
         registerListener(new VirtualKitRoom());
         registerListener(new VirtualKitRoomAdmin());
         registerListener(new KitPreviewer());
+        registerListener(new DamagePlayer());
 
 
                       // Runnables
         registerRunnable(new ClearLagTask(), 20L);
         registerRunnable(new RefreshMenu(), 20L);
         registerRunnable(new ResetInvClickCooldown(), 5L);
+        registerRunnable(new CombatTimer(), 1L);
 
         // ------------------ LOAD COMMODORE & WORLDS & OTHERS ------------------
         if(CommodoreProvider.isSupported()) {
@@ -132,6 +137,7 @@ public final class Main extends JavaPlugin {
                 if(!(Bukkit.getPluginManager().getPlugin("PlugMan") == null) && Bukkit.getPluginManager().getPlugin("PlugMan").isEnabled()) {
                     RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginManager().getPlugin("PlugMan").getServer().getPluginCommand("plugman"), "plugman");
                 }
+
             } catch (IOException e) {
                 logError(getPluginPrefix() + " An error occurred whilst loading brigadier/commodore command: /plugman");
             }
@@ -147,6 +153,14 @@ public final class Main extends JavaPlugin {
             }
         }
 
+        try {
+            PlayerDataUtils.checkLoaded();
+        } catch (Exception exception) {
+            logError("An error occurred whilst loading the class PlayerDataUtils.java");
+            logError("Try restarting the server! That should fix it.");
+            logError(" ");
+            Utils.printBetterStackTrace(exception);
+        }
 
         // ------------------ MESSAGE WHEN COMPLETE ------------------
         for(Player player : Bukkit.getOnlinePlayers()) {

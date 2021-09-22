@@ -31,3 +31,4 @@ blockCleanup: # cleans up blocks in certain worlds with intervals and items
   ffa1:
     blocks: ['OBSIDIAN', 'RESPAWN_ANCHOR']
     interval: 600
+customSoundOnDamage: false # Play a custom sound when a player is damaged?

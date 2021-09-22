@@ -3,12 +3,16 @@ package net.cybercake.ghost.ffa.listeners;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
+import net.cybercake.ghost.ffa.repeatingtasks.CombatTimer;
 import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,6 +54,8 @@ public class JoinLeaveEvent implements Listener {
         }
         player.sendTitle(" ", " ", 20, 50, 20);
         player.sendActionBar(Component.text(" "));
+
+        CombatTimer.removeBossbar.put(player.getName(), true);
     }
 
     @EventHandler
@@ -61,6 +67,21 @@ public class JoinLeaveEvent implements Listener {
         }
 
         PlayerDataUtils.setPlayerData(player, "joinLeave.leaveDate", Utils.getUnix());
+
+        for(String inCombatWith : CombatTimer.inCombatWith.values()) {
+            CombatTimer.removeBossbar.put(inCombatWith, false);
+            BossBar bossBar = DamagePlayer.bossBarHashMap.get(player.getName());
+            bossBar.setTitle(Utils.chat("&fYour opponent, " + Utils.getFormattedName(player) + "&f, logged out in combat!"));
+            bossBar.setProgress(0.0);
+            bossBar.setColor(BarColor.BLUE);
+            Bukkit.getScheduler().runTaskLater(Main.getPlugin(), ()->{
+                if(Bukkit.getPlayerExact(inCombatWith) != null) {
+                    bossBar.setVisible(false);
+                    bossBar.removeAll();
+                    CombatTimer.removeBossbar.put(inCombatWith, true);
+                }
+            }, 80L);
+        }
 
         e.quitMessage(Component.text(""));
     }
