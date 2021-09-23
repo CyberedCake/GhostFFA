@@ -41,6 +41,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Properties;
 import java.util.logging.Level;
 
@@ -105,6 +107,9 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("steleport", new STeleport(), productionReady);
         registerCommandAndTab("help", new Help(), productionReady);
         registerCommandAndTab("combat", new Combat(), productionReady);
+        registerCommandAndTab("loop", new Loop(), productionReady);
+        registerCommandAndTab("heal", new Heal(), productionReady);
+        registerCommandAndTab("feed", new Feed(), productionReady);
 
 
                       // General
@@ -198,6 +203,14 @@ public final class Main extends JavaPlugin {
     }
 
 
+
+    public void broadcastLOUD() {
+        Bukkit.broadcastMessage("SUCH A LOUD BROADCAST WITH NO MESSAGE ATTACHED!");
+    }
+
+    public void broadcastLOADArguments(String argument) {
+        Bukkit.broadcastMessage("SUCH A LOUD BROADCAST: " + argument);
+    }
 
     @Override
     public void onDisable() {

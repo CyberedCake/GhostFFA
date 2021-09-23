@@ -347,7 +347,7 @@ public class Utils {
         if(sender instanceof Player) {
             Player player = (Player) sender;
 
-            player.performCommand(command);
+            player.performCommand(command.substring(1));
         }else{
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1));
         }

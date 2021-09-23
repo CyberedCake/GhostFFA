@@ -9,6 +9,9 @@ ghostffa {
   }
   uptime {
     seconds;
+    minutes;
+    hours;
+    days;
   }
   version;
 }

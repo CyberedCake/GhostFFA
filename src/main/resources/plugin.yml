@@ -1,12 +1,12 @@
 name: GhostFFA
-version: '1.10.1'
-version-protocol: 16
+version: '1.10.2'
+version-protocol: 17
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
 description: The main plugin for the Minehut server GhostFFA.minehut.gg
 website: 'https://twitter.com/trueCyberCake'
-depend: [LuckPerms, PlaceholderAPI]
+depend: [LuckPerms, PlaceholderAPI, FastAsyncWorldEdit]
 api-version: 1.16
 
 commands:
@@ -111,3 +111,16 @@ commands:
     description: No description
     usage: An error occurred whilst executing this command!
     permission: ghostffa.command.staffteleport
+    aliases: [stp]
+  loop:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.loop
+  heal:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.heal
+  feed:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.feed

@@ -26,7 +26,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-key:4.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:examination-api:1.1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:examination-string:1.1.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.checkerframework:checker-qual:3.11.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson:4.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-legacy:4.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-plain:4.7.0" level="project" />
@@ -55,5 +54,45 @@
     <orderEntry type="library" name="Maven: de.tr7zw:nbt-data-api:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: de.tr7zw:nbt-injector:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.28.0-GA" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fastasyncworldedit:FastAsyncWorldEdit-Core:1.17-314" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fastasyncworldedit:FastAsyncWorldEdit-Libs-Core:1.17-314" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.intellectualsites.plotsquared:PlotSquared-API:4.514" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.plotsquared:PlotSquared-Core:6.1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.intellectualsites.paster:Paster:1.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.antlr:antlr4:4.9.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.antlr:antlr-runtime:3.5.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.antlr:ST4:4.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.abego.treelayout:org.abego.treelayout.core:1.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.glassfish:javax.json:1.0.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.ibm.icu:icu4j:61.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-nbt:4.9.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: it.unimi.dsi:fastutil:8.2.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.logging.log4j:log4j-api:2.14.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: de.schlichtherle:truezip:6.8.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.mozilla:rhino-runtime:1.7.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.luben:zstd-jni:1.4.8-1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.antlr:antlr4-runtime:4.9.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit:1.17-314" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.fastasyncworldedit:FastAsyncWorldEdit-Libs-Bukkit:1.17-314" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.papermc.paper:paper-api:1.17.1-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.plotsquared:PlotSquared-Bukkit:6.1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.lz4:lz4-java:1.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.jpountz:lz4-java-stream:1.0.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.zaxxer:SparseBitSet:1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.anarres:parallelgzip:1.0.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.checkerframework:checker-qual:3.18.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.logging.log4j:log4j-bom:2.14.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.InventivetalentDev:MapManager:1.8.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.TechFortress:GriefPrevention:16.17.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.bloodmc:GriefDefenderApi:920a610" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.massivecraft:mcore:7.0.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.bekvon.bukkit.residence:Residence:4.5._13.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:4.7.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.flowpowered:flow-math:1.0.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.papermc:paperlib:1.0.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bstats:bstats-bukkit:2.2.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bstats:bstats-base:2.2.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: dev.notmyfault.serverlib:ServerLib:2.3.0" level="project" />
   </component>
 </module>

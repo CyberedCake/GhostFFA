@@ -1,0 +1,3 @@
+feed {
+  player brigadier:string single_word;
+}

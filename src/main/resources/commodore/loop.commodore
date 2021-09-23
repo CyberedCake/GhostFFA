@@ -1,0 +1,7 @@
+loop {
+  amount brigadier:integer 1 10000 {
+    ticksBetween brigadier:integer 1 1000 {
+        whatCommand brigadier:string greedy_phrase;
+    }
+  }
+}
