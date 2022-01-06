@@ -1,4 +1,4 @@
-package net.cybercake.ghost.ffa.commands.worldscommand;
+package net.cybercake.ghost.ffa.commands.admincommands.holograms;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

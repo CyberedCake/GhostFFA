@@ -7,22 +7,30 @@
 
 blockedCommands:
   bypassPermission: ghostffa.bypass.blockedcommands
-  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn', 'seen', 'help', 'combat']
+  whitelisted: ['duel', 'spectate', 'games', 'discord', 'ping', 'kits', 'k', 'kit', 'clearlag', 'spawn', 'seen', 'help', 'combat', 'staffchat', 'sc']
+
 builtInClearLag:
   interval: 600 # in seconds
   showConsoleMessages: true # show console messages when clearlag executes
+
 join: # PlaceholderAPI works here
   - '{seperator}'
   - '&fWelcome to &b&lGhostFFA'
   - ' '
   - '&7&oYou have been away for {time}, welcome back :)'
   - '{seperator}'
+  -
 invClickCooldown: 5 # in ticks
+
 timeZone: 'GMT-4' # the timezone server is in (ignores Minehut's)
+dateFormat: 'MMM-d-yyyy HH:mm:ss'
+
 disabledKickMessages: # if a kick message contains this, it will not kick them for it
   - 'Kicked for spamming'
   - 'Illegal characters in chat'
+
 chatCooldown: 1000 # in miliseconds
+
 blockCleanup: # cleans up blocks in certain worlds with intervals and items
   # example:
   # aWorldName:
@@ -31,4 +39,15 @@ blockCleanup: # cleans up blocks in certain worlds with intervals and items
   ffa1:
     blocks: ['OBSIDIAN', 'RESPAWN_ANCHOR']
     interval: 600
+
 customSoundOnDamage: false # Play a custom sound when a player is damaged?
+
+duels: # Anything relating to duels
+  defaultMode: 'Sword'
+  defaultArena: 'duels1a'
+  defaultKit: 'BasicSword'
+
+fun:
+  wolfSpawning:
+    api-female: 'http://names.drycodes.com/1?nameOptions=girl_names'
+    api-male: 'http://names.drycodes.com/1?nameOptions=boy_names'

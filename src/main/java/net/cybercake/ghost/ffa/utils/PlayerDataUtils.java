@@ -15,21 +15,17 @@ public class PlayerDataUtils {
     }
 
     public static void setPlayerData(Player player, String path, Object toWhat) {
+        File customYml = new File(Main.getPlugin().getDataFolder() + "/playerdata/" + player.getUniqueId() + ".yml");
+        FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
+
+        customConfig.set(path, toWhat);
+
         try {
-            File customYml = new File(Main.getPlugin().getDataFolder() + "/playerdata/" + player.getUniqueId() + ".yml");
-            FileConfiguration customConfig = YamlConfiguration.loadConfiguration(customYml);
-
-            customConfig.set(path, toWhat);
-
-            try {
-                customConfig.save(customYml);
-            } catch (Exception e) {
-                Bukkit.getLogger().severe(" ");
-                Bukkit.getLogger().severe("Failed to save the configuration file (" + player.getUniqueId() + ".yml). Error: " + e);
-                Bukkit.getLogger().severe(" ");
-            }
+            customConfig.save(customYml);
         } catch (Exception e) {
-            e.printStackTrace();
+            Bukkit.getLogger().severe(" ");
+            Bukkit.getLogger().severe("Failed to save the configuration file (" + player.getUniqueId() + ".yml). Error: " + e);
+            Bukkit.getLogger().severe(" ");
         }
     }
 

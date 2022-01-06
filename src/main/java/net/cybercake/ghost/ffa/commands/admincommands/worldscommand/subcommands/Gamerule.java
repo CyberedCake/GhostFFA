@@ -1,11 +1,10 @@
-package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
+package net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands;
 
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
-import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.SubCommand;
 import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameRule;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -91,7 +90,7 @@ public class Gamerule extends SubCommand {
             if(stringToGamerule(args[1]).getType() == Integer.class && !(Utils.isInteger(args[2]))) {
                 return CommandManager.emptyList;
             }
-            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[3]), args[3]);
+            return net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.getWorldNames(args[3]), args[3]);
         }
         return CommandManager.emptyList;
     }

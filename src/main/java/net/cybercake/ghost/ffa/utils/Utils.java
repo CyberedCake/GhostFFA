@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.CommandBlock;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -29,28 +30,6 @@ public class Utils {
 
     public enum Status {
         FAILED, SUCCESS, INFO, TECHNICAL_FAULT
-    }
-
-    public static void commandStatus(Player player, Status commandStatus, String message) {
-        switch(commandStatus) {
-            case INFO:
-                player.sendActionBar(component(ChatColor.WHITE + message));
-                break;
-            case FAILED:
-                player.sendActionBar(component(ChatColor.RED + message));
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
-                break;
-            case SUCCESS:
-                player.sendActionBar(component(ChatColor.GREEN + message));
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1F, 2F);
-                break;
-            case TECHNICAL_FAULT:
-                player.sendActionBar(component(ChatColor.DARK_RED + message));
-                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 1F, 1F);
-                break;
-            default:
-                player.sendActionBar(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
-        }
     }
 
     public static void commandStatus(CommandSender commandSender, Status commandStatus, String message) {
@@ -75,23 +54,27 @@ public class Utils {
                 default:
                     player.sendActionBar(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
             }
-        } else {
-            switch(commandStatus) {
-                case INFO:
-                    commandSender.sendMessage(component(ChatColor.WHITE + message));
-                    break;
-                case FAILED:
-                    commandSender.sendMessage(component(ChatColor.RED + message));
-                    break;
-                case SUCCESS:
-                    commandSender.sendMessage(component(ChatColor.GREEN + message));
-                    break;
-                case TECHNICAL_FAULT:
-                    commandSender.sendMessage(component(ChatColor.DARK_RED + message));
-                    break;
-                default:
-                    commandSender.sendMessage(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
-            }
+            return;
+        }
+
+
+
+
+        switch(commandStatus) {
+            case INFO:
+                commandSender.sendMessage(component(ChatColor.WHITE + message));
+                break;
+            case FAILED:
+                commandSender.sendMessage(component(ChatColor.RED + message));
+                break;
+            case SUCCESS:
+                commandSender.sendMessage(component(ChatColor.GREEN + message));
+                break;
+            case TECHNICAL_FAULT:
+                commandSender.sendMessage(component(ChatColor.DARK_RED + message));
+                break;
+            default:
+                commandSender.sendMessage(component(ChatColor.DARK_RED + "Technical fault: Invalid STATUS type"));
         }
     }
 
@@ -199,6 +182,38 @@ public class Utils {
         numberFormat.setGroupingUsed(true);
 
         return numberFormat.format(longNumber);
+    }
+
+    public enum CheckType {
+        equals, equalsIgnoreCase, contains, startsWith
+    }
+
+    public static boolean checkStrings(CheckType checkType, String checkAgainst, String... strings) {
+        for(String str : strings) {
+            switch (checkType) {
+                case equals:
+                    if(str.equals(checkAgainst)) {
+                        return true;
+                    }
+                    break;
+                case contains:
+                    if(str.contains(checkAgainst)) {
+                        return true;
+                    }
+                    break;
+                case startsWith:
+                    if(str.startsWith(checkAgainst)) {
+                        return true;
+                    }
+                    break;
+                case equalsIgnoreCase:
+                    if(str.equalsIgnoreCase(checkAgainst)) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
     }
 
     public static String getFormattedName(Player p, String prefixIfDefault) {

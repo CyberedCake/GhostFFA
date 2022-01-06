@@ -1,6 +1,6 @@
 name: GhostFFA
-version: '1.10.2'
-version-protocol: 17
+version: '1.11'
+version-protocol: 18
 main: net.cybercake.ghost.ffa.Main
 prefix: GhostFFA
 authors: [CyberedCake]
@@ -52,6 +52,9 @@ commands:
     usage: An error occurred whilst executing this command!
     aliases: [info, pleasehelp]
   combat:
+    description: No description
+    usage: An error occurred whilst executing this command!
+  duel:
     description: No description
     usage: An error occurred whilst executing this command!
 
@@ -124,3 +127,19 @@ commands:
     description: No description
     usage: An error occurred whilst executing this command!
     permission: ghostffa.command.feed
+  sc:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.staffchat
+    permission-message: ''
+    aliases: [staffchat]
+  echo:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.echo
+    aliases: [print, send]
+  wolf:
+    description: No description
+    usage: An error occurred whilst executing this command!
+    permission: ghostffa.command.wolf
+    aliases: [dog]

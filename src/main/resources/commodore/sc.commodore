@@ -1,0 +1,4 @@
+sc {
+  -toggle;
+  message brigadier:string greedy_phrase;
+}

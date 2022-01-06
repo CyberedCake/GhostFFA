@@ -273,7 +273,9 @@ public class ItemUtils implements CommandExecutor, Listener, TabCompleter {
     }
 
     public enum Menu {
-        KITS_MAIN, KIT_VIEWER, VIRTUAL_KIT_ROOM, ADMIN_VIRTUAL_KIT_ROOM, KIT_PREVIEWER
+        KITS_MAIN, KIT_VIEWER, VIRTUAL_KIT_ROOM, ADMIN_VIRTUAL_KIT_ROOM, KIT_PREVIEWER,
+
+        DUEL_PLAYER
     }
 
     public static boolean hasEnoughRoom(Player player, ItemStack item) {

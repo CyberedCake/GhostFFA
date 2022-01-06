@@ -1,5 +1,7 @@
 package net.cybercake.ghost.ffa.listeners;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
 import net.cybercake.ghost.ffa.menus.kits.VirtualKitRoom;
@@ -13,15 +15,24 @@ import net.md_5.bungee.api.chat.hover.content.Content;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChatEvent implements Listener {
@@ -30,7 +41,7 @@ public class ChatEvent implements Listener {
     public static HashMap<String, String> lastChatContents = new HashMap<>();
 
     @EventHandler
-    public void onChat(PlayerChatEvent e) {
+    public void onChat(AsyncPlayerChatEvent e) {
         e.setCancelled(true);
 
         Player player = e.getPlayer();
@@ -119,5 +130,7 @@ public class ChatEvent implements Listener {
 
         // Send message to Discord
     }
+
+
 
 }

@@ -1,8 +1,7 @@
 package net.cybercake.ghost.ffa.commands.admincommands.gamemodes;
 
-import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.commands.admincommands.Gamemode;
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
 import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;

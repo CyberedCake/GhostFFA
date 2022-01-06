@@ -1,0 +1,22 @@
+echo {
+  chat {
+    player brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+  actionbar {
+    player brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+  title {
+    player brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+  subtitle {
+    player brigadier:string single_word {
+      message brigadier:string greedy_phrase;
+    }
+  }
+}

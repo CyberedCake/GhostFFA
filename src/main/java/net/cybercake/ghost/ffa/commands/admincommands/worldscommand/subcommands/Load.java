@@ -1,21 +1,18 @@
-package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
+package net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands;
 
 import net.cybercake.ghost.ffa.Main;
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
-import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.SubCommand;
 import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 

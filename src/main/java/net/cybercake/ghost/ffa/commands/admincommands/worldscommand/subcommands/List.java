@@ -1,7 +1,7 @@
-package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
+package net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands;
 
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
-import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.SubCommand;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
@@ -78,7 +78,7 @@ public class List extends SubCommand {
     @Override
     public java.util.List<String> tab(CommandSender sender, String[] args) {
         if(args.length == 2) {
-            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[1]), args[1]);
+            return net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.getWorldNames(args[1]), args[1]);
 
         }
         return CommandManager.emptyList;

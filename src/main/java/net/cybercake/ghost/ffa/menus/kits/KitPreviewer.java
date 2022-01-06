@@ -51,7 +51,7 @@ public class KitPreviewer implements Listener {
 
         if(Long.parseLong(PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + ".lastSetTime") + "") != 0) {
             Date date = new Date((int)PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + ".lastSetTime")*1000L);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM-dd-yyyy HH:mm:ss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Main.getMainConfig().getString("dateFormat"));
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone(Main.getMainConfig().getString("timeZone")));
             inv.setItem(48, ItemUtils.createBasicItemStack(Material.REDSTONE_TORCH, 1, "&bInformation about Kit #" + kitNumber + ":", Arrays.asList(" ", "&7Last Modified:", "   &e" + Utils.getBetterTimeFromLongs(Utils.getUnix(), (int)PlayerDataUtils.getPlayerData(player, "kits." + kitNumber + ".lastSetTime"), false) + " &eago", "   &d(" + simpleDateFormat.format(date) + "&d)")));
         }

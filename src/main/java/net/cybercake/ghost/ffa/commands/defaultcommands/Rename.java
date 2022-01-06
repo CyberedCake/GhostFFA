@@ -1,10 +1,9 @@
 package net.cybercake.ghost.ffa.commands.defaultcommands;
 
 import net.cybercake.ghost.ffa.Main;
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Rename implements CommandExecutor, TabCompleter {
 

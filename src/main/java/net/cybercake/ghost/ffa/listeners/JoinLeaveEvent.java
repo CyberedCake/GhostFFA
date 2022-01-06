@@ -1,5 +1,6 @@
 package net.cybercake.ghost.ffa.listeners;
 
+import de.tr7zw.changeme.nbtapi.data.PlayerData;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.cybercake.ghost.ffa.Main;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
@@ -44,6 +45,10 @@ public class JoinLeaveEvent implements Listener {
         PlayerDataUtils.setPlayerData(player, "joinLeave.joinDate", Utils.getUnix());
         PlayerDataUtils.setPlayerData(player, "generic.username", player.getName());
         ChatEvent.lastChat.put(player.getName(), System.currentTimeMillis());
+        CombatTimer.removeBossbar.put(player.getName(), true);
+        if(PlayerDataUtils.getPlayerData(player, "staff.enabled") == null) {
+            PlayerDataUtils.setPlayerData(player, "staff.enabled", (player.hasPermission("ghostffa.command.staffchat")));
+        }
 
         // Message when player joins
         player.sendMessage(Utils.chat("\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n"));
@@ -54,8 +59,6 @@ public class JoinLeaveEvent implements Listener {
         }
         player.sendTitle(" ", " ", 20, 50, 20);
         player.sendActionBar(Component.text(" "));
-
-        CombatTimer.removeBossbar.put(player.getName(), true);
     }
 
     @EventHandler

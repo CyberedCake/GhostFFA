@@ -1,8 +1,7 @@
-package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
+package net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands;
 
-import net.cybercake.ghost.ffa.Main;
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
-import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.SubCommand;
 import net.cybercake.ghost.ffa.utils.DataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -70,7 +68,7 @@ public class SetSpawn extends SubCommand {
     public List<String> tab(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         if(args.length == 7) {
-            return net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.worldscommand.CommandManager.getWorldNames(args[6]), args[6]);
+            return net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.createReturnList(net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager.getWorldNames(args[6]), args[6]);
         }else if(args.length == 6) {
             return net.cybercake.ghost.ffa.commands.maincommand.CommandManager.createReturnList(Collections.singletonList("" + Math.round(player.getLocation().getPitch())), args[5]);
         }else if(args.length == 5) {

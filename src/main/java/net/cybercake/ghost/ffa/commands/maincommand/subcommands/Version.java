@@ -26,6 +26,7 @@ public class Version extends SubCommand {
      public static String latestVersion;
      public static Integer latestProtocol;
      public static Exception errorObtaining;
+     public static boolean checkingVersion = false;
 
      public Version() {
           super("version", "ghostffa.subcommand.version", "Checks if the plugin is out-of-date", "/ghostffa version", "ver");
@@ -43,7 +44,7 @@ public class Version extends SubCommand {
 
           int yourProtocol = -1;
           String apiVersion = "unknown";
-          String versionString = "";
+          String versionString;
 
           try {
                versionString = Main.getVersionString();
@@ -62,7 +63,7 @@ public class Version extends SubCommand {
                return;
           }
 
-          sender.sendMessage(Utils.chat("&fThis server is running " + versionString+ " (MC: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
+          sender.sendMessage(Utils.chat("&fThis server is running " + versionString + " " + (Main.productionReady ? "" : "&c(Developmental Version)&f ") + "(MC: " + Bukkit.getMinecraftVersion() + ") (API Version: " + apiVersion + ") (Spigot Version: " + Bukkit.getBukkitVersion() + ")"));
 
           if(errorObtaining != null) {
                sender.sendMessage(Utils.chat("&cLatest version could not be obtained"));
@@ -107,6 +108,7 @@ public class Version extends SubCommand {
                     }
                     line++;
                }
+               Version.lastUpdateCheck = Utils.getUnix();
                in.close();
           } catch (MalformedURLException e) {
                Bukkit.getLogger().severe("An error occurred whilst checking for updates! (MalformedURLException)");
@@ -114,23 +116,18 @@ public class Version extends SubCommand {
                Bukkit.getLogger().severe("Stack trace below:");
                Utils.printBetterStackTrace(e);
                errorObtaining = e;
-               return;
           } catch (IOException e) {
                Bukkit.getLogger().severe("An error occurred whilst checking for updates! (IOException)");
                Bukkit.getLogger().severe(" ");
                Bukkit.getLogger().severe("Stack trace below:");
                Utils.printBetterStackTrace(e);
                errorObtaining = e;
-               return;
           } catch (Exception e) {
                Bukkit.getLogger().severe("An error occurred whilst checking for updates! (Exception)");
                Bukkit.getLogger().severe(" ");
                Bukkit.getLogger().severe("Stack trace below:");
                Utils.printBetterStackTrace(e);
                errorObtaining = e;
-               return;
           }
-
-          Version.lastUpdateCheck = Utils.getUnix();
      }
 }

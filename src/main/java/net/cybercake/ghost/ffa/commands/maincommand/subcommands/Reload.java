@@ -1,5 +1,6 @@
 package net.cybercake.ghost.ffa.commands.maincommand.subcommands;
 
+import net.cybercake.ghost.ffa.DuelsLang;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.SubCommand;
 import net.cybercake.ghost.ffa.Main;
@@ -23,7 +24,8 @@ public class Reload extends SubCommand {
         Exception ex = null;
         String exceptionFile = "";
         try { Main.getPlugin().reloadConfig(); } catch (Exception e) { ex = e; exceptionFile = "config.yml"; }
-        try { PlaceholderAPI.reloadPAPI(); } catch (Exception e) { ex = e; exceptionFile = "default-items.yml"; }
+        try { PlaceholderAPI.reloadPAPI(); } catch (Exception e) { ex = e; exceptionFile = "placeholderapi.yml"; }
+        try { DuelsLang.reloadDuelsLang(); } catch (Exception e) { ex = e; exceptionFile = "duelsLang.yml"; }
         long msAfter = System.currentTimeMillis() - mss;
         if(ex != null) {
             Utils.error(sender, "whilst trying to reload " + exceptionFile, ex);

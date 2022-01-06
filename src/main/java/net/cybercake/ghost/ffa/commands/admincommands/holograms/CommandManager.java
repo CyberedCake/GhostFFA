@@ -1,6 +1,6 @@
-package net.cybercake.ghost.ffa.commands.worldscommand;
+package net.cybercake.ghost.ffa.commands.admincommands.holograms;
 
-import net.cybercake.ghost.ffa.commands.worldscommand.subcommands.*;
+import net.cybercake.ghost.ffa.commands.admincommands.holograms.subcommands.*;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
@@ -26,19 +26,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     private final ArrayList<SubCommand> subcommands = new ArrayList<>();
     public static ArrayList<String> emptyList = new ArrayList<>();
 
-    private final static String pluginPermission = "ghostffa.worlds";
-    private final static String pluginTitle = "WORLDS";
+    private final static String pluginPermission = "ghostffa.holograms";
+    private final static String pluginTitle = "HOLOGRAMS";
     private final static String noPermissionMsg = "&cYou don't have permission to use this";
 
     public CommandManager() {
         subcommands.add(new Help());
-        subcommands.add(new net.cybercake.ghost.ffa.commands.worldscommand.subcommands.List());
-        subcommands.add(new Teleport());
-        subcommands.add(new Load());
-        subcommands.add(new Delete());
-        subcommands.add(new Unload());
-        subcommands.add(new Gamerule());
-        subcommands.add(new SetSpawn());
     }
 
     // Note for later: please clan this up and remove the arrow code :D

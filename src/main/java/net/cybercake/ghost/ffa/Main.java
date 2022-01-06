@@ -10,8 +10,9 @@ import net.cybercake.ghost.ffa.commands.defaultcommands.*;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandListeners;
 import net.cybercake.ghost.ffa.commands.maincommand.CommandManager;
 import net.cybercake.ghost.ffa.commands.maincommand.subcommands.VirtualKitRoomAdmin;
-import net.cybercake.ghost.ffa.commands.worldscommand.subcommands.Load;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands.Load;
 import net.cybercake.ghost.ffa.listeners.*;
+import net.cybercake.ghost.ffa.menus.duels.DuelMain;
 import net.cybercake.ghost.ffa.menus.kits.KitPreviewer;
 import net.cybercake.ghost.ffa.menus.kits.KitViewer;
 import net.cybercake.ghost.ffa.menus.kits.KitsMain;
@@ -25,13 +26,10 @@ import net.cybercake.ghost.ffa.utils.ItemUtils;
 import net.cybercake.ghost.ffa.utils.PlayerDataUtils;
 import net.cybercake.ghost.ffa.utils.Utils;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang.Validate;
 import org.bukkit.*;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,16 +39,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Properties;
-import java.util.logging.Level;
 
 public final class Main extends JavaPlugin {
 
     private static Main plugin;
     public static String virtualKitRoomLoaded = "unloaded";
     public static long unixStarted = 0;
+    public static boolean productionReady = true;
 
     @Override
     public void onEnable() {
@@ -66,6 +62,9 @@ public final class Main extends JavaPlugin {
         saveResource("placeholderapi.yml", true);
         PlaceholderAPI.reloadPAPI();
 
+        saveResource("duelsLang.yml", true);
+        DuelsLang.reloadDuelsLang();
+
         // ------------------ MESSAGE WHEN RELOADING ------------------
         if(Bukkit.getOnlinePlayers().size() > 0) {
             for(Player player : Bukkit.getOnlinePlayers()) {
@@ -80,10 +79,9 @@ public final class Main extends JavaPlugin {
         }
 
         // ------------------ LOAD COMMANDS, TAB COMPLETERS, LISTENERS, AND RUNNABLES ------------------
-        boolean productionReady = true;
                       // General commands
         registerCommandAndTab("ghostffa", new CommandManager(), productionReady);
-        registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.worldscommand.CommandManager(), productionReady);
+        registerCommandAndTab("worlds", new net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager(), productionReady);
         registerCommandAndTab("guislots", new ItemUtils(), productionReady);
         registerCommandAndTab("ping", new Ping(), productionReady);
         registerCommandAndTab("discord", new Discord(), productionReady);
@@ -92,6 +90,7 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("spawn", new Spawn(), productionReady);
         registerCommandAndTab("rename", new Rename(), productionReady);
         registerCommandAndTab("seen", new Seen(), productionReady);
+        registerCommandAndTab("duel", new Duel(), productionReady);
                       // Gamemode commands
         registerCommandAndTab("gmc", new GMC(), productionReady);
         registerCommandAndTab("gms", new GMS(), productionReady);
@@ -110,12 +109,17 @@ public final class Main extends JavaPlugin {
         registerCommandAndTab("loop", new Loop(), productionReady);
         registerCommandAndTab("heal", new Heal(), productionReady);
         registerCommandAndTab("feed", new Feed(), productionReady);
+        registerCommandAndTab("sc", new StaffChat(), productionReady);
+        registerCommandAndTab("echo", new Echo(), productionReady);
+        registerCommandAndTab("wolf", new Wolf(), productionReady);
 
 
                       // General
         registerListener(new ChatEvent());
         registerListener(new JoinLeaveEvent());
         registerListener(new KickEvent());
+                      // Other
+        registerListener(new Wolf());
                       // Commands
         registerListener(new CommandListeners());
         registerListener(new CommandSendEvent());
@@ -128,6 +132,7 @@ public final class Main extends JavaPlugin {
         registerListener(new VirtualKitRoomAdmin());
         registerListener(new KitPreviewer());
         registerListener(new DamagePlayer());
+        registerListener(new DuelMain());
 
 
                       // Runnables
@@ -140,7 +145,7 @@ public final class Main extends JavaPlugin {
         if(CommodoreProvider.isSupported()) {
             try {
                 if(!(Bukkit.getPluginManager().getPlugin("PlugMan") == null) && Bukkit.getPluginManager().getPlugin("PlugMan").isEnabled()) {
-                    RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginManager().getPlugin("PlugMan").getServer().getPluginCommand("plugman"), "plugman");
+                    RegisterBrigadier.registerCommodoreCommand(Bukkit.getPluginCommand("plugman"), "plugman");
                 }
 
             } catch (IOException e) {
@@ -204,13 +209,6 @@ public final class Main extends JavaPlugin {
 
 
 
-    public void broadcastLOUD() {
-        Bukkit.broadcastMessage("SUCH A LOUD BROADCAST WITH NO MESSAGE ATTACHED!");
-    }
-
-    public void broadcastLOADArguments(String argument) {
-        Bukkit.broadcastMessage("SUCH A LOUD BROADCAST: " + argument);
-    }
 
     @Override
     public void onDisable() {
@@ -221,26 +219,6 @@ public final class Main extends JavaPlugin {
 
 
 
-
-    @NotNull
-    public static YamlConfiguration loadConfiguration(@NotNull File file) throws Exception {
-        Validate.notNull(file, "File cannot be null");
-
-        YamlConfiguration config = new YamlConfiguration();
-
-        try {
-            config.load(file);
-        } catch (FileNotFoundException ex) {
-        } catch (IOException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
-            throw ex;
-        } catch (InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
-            throw ex;
-        }
-
-        return config;
-    }
 
     public static void broadcastFormatted(String string, boolean admin) {
         if(Bukkit.getOnlinePlayers().size() == 0) return;
@@ -301,7 +279,7 @@ public final class Main extends JavaPlugin {
                 }
             }
         } catch (Exception exception) {
-            logError("An error occurred whilst loading the command: /" + name);
+            logError(getPluginPrefix() + " An error occurred whilst loading the command: /" + name);
         }
     }
     private static void registerCommand(String name, CommandExecutor commandExecutor) { plugin.getCommand(name).setExecutor(commandExecutor); }

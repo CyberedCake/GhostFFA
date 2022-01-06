@@ -1,7 +1,7 @@
-package net.cybercake.ghost.ffa.commands.worldscommand.subcommands;
+package net.cybercake.ghost.ffa.commands.admincommands.worldscommand.subcommands;
 
-import net.cybercake.ghost.ffa.commands.worldscommand.SubCommand;
-import net.cybercake.ghost.ffa.commands.worldscommand.CommandManager;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.SubCommand;
+import net.cybercake.ghost.ffa.commands.admincommands.worldscommand.CommandManager;
 import net.cybercake.ghost.ffa.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
